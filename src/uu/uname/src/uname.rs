@@ -82,7 +82,13 @@ impl UNameOutput {
 
         let machine = (opts.machine || opts.all).then(|| uname.machine().to_owned());
 
-        let os = (opts.os || opts.all).then(|| uname.osname().to_owned());
+        let os = (opts.os || opts.all).then(|| {
+            if cfg!(target_os = "runixos") {
+                "RunixOS".into()
+            } else {
+                uname.osname().to_owned()
+            }
+        });
 
         // This option is unsupported on modern Linux systems
         // See: https://lists.gnu.org/archive/html/bug-coreutils/2005-09/msg00063.html
