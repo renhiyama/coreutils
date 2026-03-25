@@ -269,7 +269,7 @@ feat_os_unix_android = [
 # ** NOTE: these `feat_require_...` sets should be minimized as much as possible to encourage cross-platform availability of utilities
 #
 # "feat_require_unix" == set of utilities requiring support which is only available on unix platforms
-feat_require_unix = ["feat_require_unix_core", "stdbuf"]
+feat_require_unix = ["feat_require_unix_core"]
 # "feat_require_unix_musl" == set of utilities requiring unix support, excluding stdbuf (cdylib not supported on musl)
 feat_require_unix_musl = ["feat_require_unix_core"]
 # "feat_require_unix_core" == core unix utilities (shared between regular unix and musl)
