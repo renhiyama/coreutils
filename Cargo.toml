@@ -749,4 +749,4 @@ rustix = { git = "https://github.com/renhiyama/rustix" }
 mio = { git = "https://github.com/renhiyama/mio" }
 socket2 = { git = "https://github.com/renhiyama/socket2" }
 procfs = { git = "https://github.com/renhiyama/procfs", branch = "runixos" }
-getrandom = { git = "https://github.com/renhiyama/getrandom-v02", branch = "runixos" }
+getrandom = { git = "https://github.com/renhiyama/getrandom-runixos" }
