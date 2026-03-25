@@ -752,3 +752,4 @@ procfs = { git = "https://github.com/renhiyama/procfs", branch = "runixos" }
 getrandom_02 = { package = "getrandom", path = "patches/getrandom-v02" }
 getrandom_03 = { package = "getrandom", path = "patches/getrandom-v03" }
 getrandom_04 = { package = "getrandom", path = "patches/getrandom-v04" }
+nix_031 = { package = "nix", path = "patches/nix-v031" }
