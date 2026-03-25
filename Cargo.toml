@@ -740,3 +740,11 @@ large_types_passed_by_value = "allow"
 
 [workspace.metadata.cargo-shear]
 ignored = ["clap", "fluent", "libstdbuf"]
+
+[patch.crates-io]
+libc = { git = "https://github.com/renhiyama/libc", branch = "libc-0.2" }
+nix = { git = "https://github.com/renhiyama/nix", branch = "runixos-0.30" }
+errno = { git = "https://github.com/renhiyama/rust-errno", branch = "runixos" }
+rustix = { git = "https://github.com/renhiyama/rustix" }
+mio = { git = "https://github.com/renhiyama/mio" }
+socket2 = { git = "https://github.com/renhiyama/socket2" }
