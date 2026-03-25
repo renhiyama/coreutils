@@ -749,4 +749,6 @@ rustix = { git = "https://github.com/renhiyama/rustix" }
 mio = { git = "https://github.com/renhiyama/mio" }
 socket2 = { git = "https://github.com/renhiyama/socket2" }
 procfs = { git = "https://github.com/renhiyama/procfs", branch = "runixos" }
-getrandom = { git = "https://github.com/renhiyama/getrandom-runixos" }
+getrandom_02 = { package = "getrandom", path = "patches/getrandom-v02" }
+getrandom_03 = { package = "getrandom", path = "patches/getrandom-v03" }
+getrandom_04 = { package = "getrandom", path = "patches/getrandom-v04" }
