@@ -4,7 +4,7 @@
 // file that was distributed with this source code.
 // spell-checker:ignore (words) nosuchgroup groupname
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::os::unix::ffi::OsStringExt;
 use uucore::process::getegid;
 use uutests::{at_and_ucmd, new_ucmd};
@@ -194,7 +194,7 @@ fn test_preserve_root_symlink_cwd_root() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_reference() {
     // skip for root or MS-WSL
     // * MS-WSL is bugged (as of 2019-12-25), allowing non-root accounts su-level privileges for `chgrp`
@@ -222,7 +222,7 @@ fn test_reference() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_vendor = "apple"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_vendor = "apple"))]
 fn test_reference_multi_no_equal() {
     new_ucmd!()
         .arg("-v")
@@ -236,7 +236,7 @@ fn test_reference_multi_no_equal() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_vendor = "apple"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_vendor = "apple"))]
 fn test_reference_last() {
     new_ucmd!()
         .arg("-v")
@@ -263,7 +263,7 @@ fn test_missing_files() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_big_p() {
     if getegid() != 0 {
         new_ucmd!()
@@ -278,7 +278,7 @@ fn test_big_p() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_big_h() {
     if getegid() != 0 {
         assert!(
@@ -603,7 +603,7 @@ fn test_numeric_group_formats() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_chgrp_non_utf8_paths() {
     let (at, mut ucmd) = at_and_ucmd!();
 

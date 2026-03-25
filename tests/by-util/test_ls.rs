@@ -17,9 +17,9 @@ use regex::Regex;
 use rlimit::Resource;
 #[cfg(not(target_os = "openbsd"))]
 use std::collections::HashMap;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::ffi::OsStr;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::os::unix::ffi::OsStrExt;
 #[cfg(not(windows))]
 use std::path::PathBuf;
@@ -474,7 +474,7 @@ fn test_ls_devices() {
             .stdout_matches(&Regex::new("[^ ] 3, 2 [^ ]").unwrap());
     }
 
-    #[cfg(any(target_os = "linux", target_os = "android"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
     {
         scene
             .ucmd()
@@ -5041,7 +5041,7 @@ fn test_tabsize_formatting() {
 }
 
 #[cfg(any(
-    target_os = "linux",
+    any(target_os = "linux", target_os = "runixos"),
     target_os = "macos",
     target_os = "ios",
     target_os = "freebsd",
@@ -5082,7 +5082,7 @@ fn test_device_number() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_invalid_utf8() {
     let (at, mut ucmd) = at_and_ucmd!();
 
@@ -5446,7 +5446,7 @@ fn test_ls_dired_complex() {
 
     // Number of blocks. We run this test only if the default size of a newly created directory is
     // 4096 bytes to prevent it from failing where this is not the case (e.g. using tmpfs for /tmp).
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     if at.metadata("d/d").len() == 4096 {
         result.stdout_contains("  total 4");
     }
@@ -6416,7 +6416,7 @@ fn test_suffix_case_sensitivity() {
     );
 }
 
-#[cfg(all(unix, target_os = "linux"))]
+#[cfg(all(unix, any(target_os = "linux", target_os = "runixos")))]
 #[test]
 fn test_ls_capabilities() {
     let scene = TestScenario::new(util_name!());
@@ -7073,7 +7073,7 @@ fn test_f_with_long_format() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_ls_proc_self_fd_no_errors() {
     // Regression test: ReadDir must stay alive until metadata() is called
     // to prevent "cannot access '/proc/self/fd/3'" errors.

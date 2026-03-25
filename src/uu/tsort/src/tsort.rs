@@ -79,7 +79,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
 
             // advise the OS we will access the data sequentially if available.
             #[cfg(any(
-                target_os = "linux",
+                any(target_os = "linux", target_os = "runixos"),
                 target_os = "android",
                 target_os = "fuchsia",
                 target_os = "wasi",

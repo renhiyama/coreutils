@@ -3,7 +3,7 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 // spell-checker:ignore cmdline dyld dylib PDEATHSIG setvbuf
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use uutests::at_and_ucmd;
 use uutests::new_ucmd;
 #[cfg(not(target_os = "windows"))]
@@ -328,7 +328,7 @@ fn test_libstdbuf_preload() {
     );
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[cfg(not(target_env = "musl"))]
 #[test]
 fn test_stdbuf_non_utf8_paths() {
@@ -347,7 +347,7 @@ fn test_stdbuf_non_utf8_paths() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_stdbuf_no_fork_regression() {
     // Regression test for issue #9066: https://github.com/uutils/coreutils/issues/9066
     // The original stdbuf implementation used fork+spawn which broke signal handling

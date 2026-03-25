@@ -12,7 +12,7 @@
 //! ```
 //! use uucore::entries::{self, Locate};
 //!
-//! let root_group = if cfg!(any(target_os = "linux", target_os = "android")) {
+//! let root_group = if cfg!(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")) {
 //!     "root"
 //! } else {
 //!     "wheel"

@@ -224,7 +224,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     fn test_get_perm_bits_from_xattrs() {
         let temp_dir = tempdir().unwrap();
         let source_path = temp_dir.path().join("source_dir");

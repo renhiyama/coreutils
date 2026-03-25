@@ -8,7 +8,7 @@ use uutests::at_and_ucmd;
 use uutests::new_ucmd;
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_tsort_non_utf8_paths() {
     use std::os::unix::ffi::OsStringExt;
     let (at, mut ucmd) = at_and_ucmd!();

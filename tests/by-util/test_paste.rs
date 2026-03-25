@@ -4,7 +4,7 @@
 // file that was distributed with this source code.
 
 // spell-checker:ignore bsdutils toybox
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::os::unix::ffi::OsStringExt;
 use uutests::at_and_ucmd;
 use uutests::new_ucmd;
@@ -416,7 +416,7 @@ fn test_data() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_non_utf8_delimiter() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.write("f1", "1\n2\n");
@@ -431,7 +431,7 @@ fn test_non_utf8_delimiter() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_paste_non_utf8_paths() {
     let (at, mut ucmd) = at_and_ucmd!();
 
@@ -447,7 +447,7 @@ fn test_paste_non_utf8_paths() {
         .stdout_is("line1\tcol1\nline2\tcol2\n");
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn make_broken_pipe() -> std::fs::File {
     use std::os::unix::io::FromRawFd;
 
@@ -465,7 +465,7 @@ fn make_broken_pipe() -> std::fs::File {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_dev_zero_write_error_dev_full() {
     use std::fs::File;
 
@@ -481,7 +481,7 @@ fn test_dev_zero_write_error_dev_full() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_dev_zero_closed_pipe() {
     new_ucmd!()
         .arg("/dev/zero")

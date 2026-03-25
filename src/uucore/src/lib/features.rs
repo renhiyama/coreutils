@@ -68,24 +68,24 @@ pub mod entries;
 pub mod perms;
 #[cfg(all(unix, any(feature = "pipes", feature = "buf-copy")))]
 pub mod pipes;
-#[cfg(all(target_os = "linux", feature = "proc-info"))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), feature = "proc-info"))]
 pub mod proc_info;
 #[cfg(all(unix, feature = "process"))]
 pub mod process;
 #[cfg(all(unix, not(target_os = "redox")))]
 pub mod safe_traversal;
-#[cfg(all(target_os = "linux", feature = "tty"))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), feature = "tty"))]
 pub mod tty;
 
 #[cfg(all(unix, feature = "fsxattr"))]
 pub mod fsxattr;
 #[cfg(feature = "hardware")]
 pub mod hardware;
-#[cfg(all(feature = "selinux", any(target_os = "linux", target_os = "android")))]
+#[cfg(all(feature = "selinux", any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
 pub mod selinux;
 #[cfg(all(unix, not(target_os = "fuchsia"), feature = "signals"))]
 pub mod signals;
-#[cfg(all(target_os = "linux", feature = "smack"))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), feature = "smack"))]
 pub mod smack;
 #[cfg(feature = "feat_systemd_logind")]
 pub mod systemd_logind;

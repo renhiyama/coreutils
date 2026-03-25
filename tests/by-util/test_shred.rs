@@ -322,7 +322,7 @@ fn test_shred_rename_exhaustion() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_shred_non_utf8_paths() {
     use std::os::unix::ffi::OsStrExt;
     let ts = TestScenario::new(util_name!());

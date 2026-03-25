@@ -252,7 +252,7 @@ fn test_separator_and_terminator() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_separator_non_utf8() {
     use std::{ffi::OsString, os::unix::ffi::OsStringExt};
 
@@ -275,7 +275,7 @@ fn test_separator_non_utf8() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_terminator_non_utf8() {
     use std::{ffi::OsString, os::unix::ffi::OsStringExt};
 

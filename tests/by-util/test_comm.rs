@@ -674,7 +674,7 @@ fn test_output_lossy_utf8() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_comm_anonymous_pipes() {
     use std::{io::Write, os::fd::AsRawFd, process};
     use uucore::pipes::pipe;
@@ -713,7 +713,7 @@ fn test_comm_anonymous_pipes() {
 }
 
 #[test]
-#[cfg(all(target_os = "linux", not(target_env = "musl")))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), not(target_env = "musl")))]
 fn test_read_error() {
     new_ucmd!()
         .arg("/proc/self/mem")
@@ -729,7 +729,7 @@ fn test_read_error() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_comm_write_error_dev_full() {
     use std::fs::OpenOptions;
     let scene = TestScenario::new(util_name!());

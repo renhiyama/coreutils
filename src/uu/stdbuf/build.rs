@@ -10,7 +10,7 @@ use std::path::Path;
 use std::process::Command;
 
 #[cfg(any(
-    target_os = "linux",
+    any(target_os = "linux", target_os = "runixos"),
     target_os = "android",
     target_os = "freebsd",
     target_os = "netbsd",

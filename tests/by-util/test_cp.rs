@@ -27,19 +27,19 @@ use std::os::unix::fs::{FileTypeExt, MetadataExt};
 use std::os::windows::fs::symlink_file;
 #[cfg(not(windows))]
 use std::path::Path;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::path::PathBuf;
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 use filetime::FileTime;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::ffi::OsString;
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 use std::fs as std_fs;
 use std::thread::sleep;
 use std::time::Duration;
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[cfg(feature = "truncate")]
 use uutests::util::PATH;
 
@@ -56,11 +56,11 @@ static TEST_COPY_FROM_FOLDER: &str = "hello_dir_with_file/";
 static TEST_COPY_FROM_FOLDER_FILE: &str = "hello_dir_with_file/hello_world.txt";
 static TEST_COPY_TO_FOLDER_NEW: &str = "hello_dir_new";
 static TEST_COPY_TO_FOLDER_NEW_FILE: &str = "hello_dir_new/hello_world.txt";
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
 static TEST_MOUNT_COPY_FROM_FOLDER: &str = "dir_with_mount";
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
 static TEST_MOUNT_MOUNTPOINT: &str = "mount";
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
 static TEST_MOUNT_OTHER_FILESYSTEM_FILE: &str = "mount/DO_NOT_copy_me.txt";
 static TEST_NONEXISTENT_FILE: &str = "nonexistent_file.txt";
 #[cfg(all(
@@ -91,7 +91,7 @@ macro_rules! assert_metadata_eq {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_stream_to_full() {
     let (_, mut ucmd) = at_and_ucmd!();
     ucmd.arg("/dev/zero")
@@ -834,7 +834,7 @@ fn test_cp_f_i_verbose_non_writeable_destination_empty() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_arg_link() {
     use std::os::linux::fs::MetadataExt;
 
@@ -848,7 +848,7 @@ fn test_cp_arg_link() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_arg_link_with_dest_hardlink_to_source() {
     use std::os::linux::fs::MetadataExt;
 
@@ -867,7 +867,7 @@ fn test_cp_arg_link_with_dest_hardlink_to_source() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_arg_link_with_same_file() {
     use std::os::linux::fs::MetadataExt;
 
@@ -883,7 +883,7 @@ fn test_cp_arg_link_with_same_file() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_verbose_preserved_link_to_dir() {
     use std::os::linux::fs::MetadataExt;
 
@@ -1803,7 +1803,7 @@ fn test_cp_preserve_xattr() {
 }
 
 #[test]
-#[cfg(all(target_os = "linux", not(feature = "feat_selinux")))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), not(feature = "feat_selinux")))]
 fn test_cp_preserve_all_context_fails_on_non_selinux() {
     new_ucmd!()
         .arg(TEST_COPY_FROM_FOLDER_FILE)
@@ -2271,7 +2271,7 @@ fn test_cp_no_deref_folder_to_folder() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_archive() {
     let (at, mut ucmd) = at_and_ucmd!();
     let ts = time::OffsetDateTime::now_utc();
@@ -2368,7 +2368,7 @@ fn test_cp_archive_recursive() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_preserve_timestamps() {
     let (at, mut ucmd) = at_and_ucmd!();
     let ts = time::OffsetDateTime::now_utc();
@@ -2401,7 +2401,7 @@ fn test_cp_preserve_timestamps() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_no_preserve_timestamps() {
     let (at, mut ucmd) = at_and_ucmd!();
     let ts = time::OffsetDateTime::now_utc();
@@ -2446,7 +2446,7 @@ fn test_cp_no_preserve_timestamps() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_target_file_dev_null() {
     let (at, mut ucmd) = at_and_ucmd!();
     let file1 = "/dev/null";
@@ -2459,7 +2459,7 @@ fn test_cp_target_file_dev_null() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
 fn test_cp_one_file_system() {
     use uutests::util::AtPath;
     use walkdir::WalkDir;
@@ -2517,7 +2517,7 @@ fn test_cp_one_file_system() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "macos"))]
 fn test_cp_reflink_always() {
     let (at, mut ucmd) = at_and_ucmd!();
     let result = ucmd
@@ -2535,7 +2535,7 @@ fn test_cp_reflink_always() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "macos"))]
 fn test_cp_reflink_auto() {
     let (at, mut ucmd) = at_and_ucmd!();
     ucmd.arg("--reflink=auto")
@@ -2548,7 +2548,7 @@ fn test_cp_reflink_auto() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "macos"))]
 fn test_cp_reflink_none() {
     let (at, mut ucmd) = at_and_ucmd!();
     let result = ucmd
@@ -2566,7 +2566,7 @@ fn test_cp_reflink_none() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "macos"))]
 fn test_cp_reflink_never() {
     for argument in ["--reflink=never", "--reflink=neve", "--reflink=n"] {
         let (at, mut ucmd) = at_and_ucmd!();
@@ -2581,7 +2581,7 @@ fn test_cp_reflink_never() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "macos"))]
 fn test_cp_reflink_bad() {
     let (_, mut ucmd) = at_and_ucmd!();
     let _result = ucmd
@@ -2604,7 +2604,7 @@ fn test_cp_conflicting_update() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_reflink_insufficient_permission() {
     let (at, mut ucmd) = at_and_ucmd!();
 
@@ -2620,7 +2620,7 @@ fn test_cp_reflink_insufficient_permission() {
         .stderr_only("cp: 'unreadable' -> 'existing_file.txt': Permission denied\n");
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_closes_file_descriptors() {
     use rlimit::Resource;
@@ -2647,7 +2647,7 @@ fn test_closes_file_descriptors() {
         .succeeds();
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[test]
 fn test_cp_sparse_never_empty() {
     const BUFFER_SIZE: usize = 4096 * 4;
@@ -2667,7 +2667,7 @@ fn test_cp_sparse_never_empty() {
     );
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[test]
 fn test_cp_sparse_always_empty() {
     const BUFFER_SIZE: usize = 4096 * 4;
@@ -2687,7 +2687,7 @@ fn test_cp_sparse_always_empty() {
     }
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[test]
 fn test_cp_sparse_always_non_empty() {
     const BUFFER_SIZE: usize = 4096 * 16 + 3;
@@ -2713,7 +2713,7 @@ fn test_cp_sparse_always_non_empty() {
     assert_eq!(at.metadata("dst_file_sparse").blocks(), touched_block_count);
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[test]
 fn test_cp_sparse_invalid_option() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -2724,7 +2724,7 @@ fn test_cp_sparse_invalid_option() {
         .fails();
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[test]
 fn test_cp_sparse_always_reflink_always() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -2740,7 +2740,7 @@ fn test_cp_sparse_always_reflink_always() {
     .fails();
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[test]
 fn test_cp_sparse_never_reflink_always() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -2756,7 +2756,7 @@ fn test_cp_sparse_never_reflink_always() {
     .fails();
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[cfg(feature = "truncate")]
 #[test]
 fn test_cp_reflink_always_override() {
@@ -3891,7 +3891,7 @@ fn test_copy_contents_fifo() {
     assert_eq!(at.read("outfile"), "foo");
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_reflink_never_sparse_always() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -3991,7 +3991,7 @@ fn test_src_base_dot() {
     assert!(!at.dir_exists("y/x"));
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn non_utf8_name(suffix: &str) -> OsString {
     use std::os::unix::ffi::OsStringExt;
     let mut name = OsString::from_vec(vec![0xff, 0xff]);
@@ -3999,7 +3999,7 @@ fn non_utf8_name(suffix: &str) -> OsString {
     name
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_non_utf8_src() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -4012,7 +4012,7 @@ fn test_non_utf8_src() {
     assert!(at.file_exists("dest"));
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_non_utf8_dest() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -4024,7 +4024,7 @@ fn test_non_utf8_dest() {
     assert!(at.file_exists(dest));
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_non_utf8_target() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -4051,11 +4051,11 @@ fn test_cp_archive_on_directory_ending_dot() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "windows", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "windows", target_os = "macos"))]
 fn test_cp_debug_default() {
     #[cfg(target_os = "macos")]
     let expected = "copy offload: unknown, reflink: unsupported, sparse detection: unsupported";
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     let expected = "copy offload: unknown, reflink: unsupported, sparse detection: no";
     #[cfg(windows)]
     let expected = "copy offload: unsupported, reflink: unsupported, sparse detection: unsupported";
@@ -4073,7 +4073,7 @@ fn test_cp_debug_default() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "windows", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "windows", target_os = "macos"))]
 fn test_cp_debug_multiple_default() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4092,7 +4092,7 @@ fn test_cp_debug_multiple_default() {
 
     #[cfg(target_os = "macos")]
     let expected = "copy offload: unknown, reflink: unsupported, sparse detection: unsupported";
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     let expected = "copy offload: unknown, reflink: unsupported, sparse detection: no";
     #[cfg(windows)]
     let expected = "copy offload: unsupported, reflink: unsupported, sparse detection: unsupported";
@@ -4102,7 +4102,7 @@ fn test_cp_debug_multiple_default() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_sparse_reflink() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4134,7 +4134,7 @@ fn test_cp_debug_no_update() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_sparse_always() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4150,7 +4150,7 @@ fn test_cp_debug_sparse_always() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_sparse_never() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4171,7 +4171,7 @@ fn test_cp_debug_sparse_auto() {
     let at = &ts.fixtures;
     at.touch("a");
 
-    #[cfg(not(any(target_os = "linux", target_os = "macos")))]
+    #[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "macos")))]
     ts.ucmd()
         .arg("--debug")
         .arg("--sparse=auto")
@@ -4179,11 +4179,11 @@ fn test_cp_debug_sparse_auto() {
         .arg("b")
         .succeeds();
 
-    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "macos"))]
     {
         #[cfg(target_os = "macos")]
         let expected = "copy offload: unknown, reflink: unsupported, sparse detection: unsupported";
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "runixos"))]
         let expected = "copy offload: unknown, reflink: unsupported, sparse detection: no";
 
         ts.ucmd()
@@ -4197,11 +4197,11 @@ fn test_cp_debug_sparse_auto() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "macos"))]
 fn test_cp_debug_reflink_auto() {
     #[cfg(target_os = "macos")]
     let expected = "copy offload: unknown, reflink: unsupported, sparse detection: unsupported";
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     let expected = "copy offload: unknown, reflink: unsupported, sparse detection: no";
 
     let ts = TestScenario::new(util_name!());
@@ -4218,7 +4218,7 @@ fn test_cp_debug_reflink_auto() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_sparse_always_reflink_auto() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4261,7 +4261,7 @@ fn test_cp_dest_no_permissions() {
 }
 
 /// Test readonly destination behavior with reflink options
-#[cfg(any(target_os = "linux", target_os = "macos"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "macos"))]
 #[test]
 fn test_cp_readonly_dest_with_reflink() {
     let ts = TestScenario::new(util_name!());
@@ -4495,7 +4495,7 @@ fn test_acl_preserve() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4520,7 +4520,7 @@ fn test_cp_debug_reflink_never_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_empty_file_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4545,7 +4545,7 @@ fn test_cp_debug_reflink_never_empty_file_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_default_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4571,7 +4571,7 @@ fn test_cp_debug_default_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_default_less_than_512_bytes() {
     let ts = TestScenario::new(util_name!());
 
@@ -4594,7 +4594,7 @@ fn test_cp_debug_default_less_than_512_bytes() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_default_without_hole() {
     let ts = TestScenario::new(util_name!());
 
@@ -4614,7 +4614,7 @@ fn test_cp_debug_default_without_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_default_empty_file_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4640,7 +4640,7 @@ fn test_cp_debug_default_empty_file_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_sparse_always_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4666,7 +4666,7 @@ fn test_cp_debug_reflink_never_sparse_always_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_sparse_always_without_hole() {
     let ts = TestScenario::new(util_name!());
     let empty_bytes = [0_u8; 10000];
@@ -4691,7 +4691,7 @@ fn test_cp_debug_reflink_never_sparse_always_without_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_sparse_always_empty_file_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4713,7 +4713,7 @@ fn test_cp_debug_reflink_never_sparse_always_empty_file_with_hole() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_default_virtual_file() {
     // This file has existed at least since 2008, so we assume that it is present on "all" Linux kernels.
     // https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-profiling
@@ -4736,7 +4736,7 @@ fn test_cp_default_virtual_file() {
     assert!(dest_size > 0);
 }
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_auto_sparse_always_non_sparse_file_with_long_zero_sequence() {
     let ts = TestScenario::new(util_name!());
 
@@ -4762,7 +4762,7 @@ fn test_cp_debug_reflink_auto_sparse_always_non_sparse_file_with_long_zero_seque
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_sparse_never_empty_sparse_file() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4778,7 +4778,7 @@ fn test_cp_debug_sparse_never_empty_sparse_file() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_sparse_always_non_sparse_file_with_long_zero_sequence() {
     let ts = TestScenario::new(util_name!());
 
@@ -4805,7 +4805,7 @@ fn test_cp_debug_reflink_never_sparse_always_non_sparse_file_with_long_zero_sequ
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_sparse_always_sparse_virtual_file() {
     // This file has existed at least since 2008, so we assume that it is present on "all" Linux kernels.
     // https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-profiling
@@ -4829,7 +4829,7 @@ fn test_cp_debug_sparse_always_sparse_virtual_file() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_less_than_512_bytes() {
     let ts = TestScenario::new(util_name!());
 
@@ -4851,7 +4851,7 @@ fn test_cp_debug_reflink_never_less_than_512_bytes() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_sparse_never_empty_file_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4873,7 +4873,7 @@ fn test_cp_debug_reflink_never_sparse_never_empty_file_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_file_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4896,7 +4896,7 @@ fn test_cp_debug_reflink_never_file_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_sparse_never_less_than_512_bytes() {
     let ts = TestScenario::new(util_name!());
 
@@ -4919,7 +4919,7 @@ fn test_cp_debug_sparse_never_less_than_512_bytes() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_sparse_never_without_hole() {
     let ts = TestScenario::new(util_name!());
 
@@ -4941,7 +4941,7 @@ fn test_cp_debug_sparse_never_without_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_sparse_never_empty_file_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4963,7 +4963,7 @@ fn test_cp_debug_sparse_never_empty_file_with_hole() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_sparse_never_file_with_hole() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -4986,7 +4986,7 @@ fn test_cp_debug_sparse_never_file_with_hole() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_default_sparse_virtual_file() {
     // This file has existed at least since 2008, so we assume that it is present on "all" Linux kernels.
     // https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-profiling
@@ -5009,7 +5009,7 @@ fn test_cp_debug_default_sparse_virtual_file() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_sparse_never_zero_sized_virtual_file() {
     let ts = TestScenario::new(util_name!());
     ts.ucmd()
@@ -5022,7 +5022,7 @@ fn test_cp_debug_sparse_never_zero_sized_virtual_file() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_debug_default_zero_sized_virtual_file() {
     let ts = TestScenario::new(util_name!());
     ts.ucmd()
@@ -5034,7 +5034,7 @@ fn test_cp_debug_default_zero_sized_virtual_file() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_cp_debug_reflink_never_without_hole() {
     let ts = TestScenario::new(util_name!());
     let filler_bytes = [0_u8; 1000];
@@ -7628,7 +7628,7 @@ fn test_cp_to_existing_file_permissions() {
 
 /// Test xattr ENOTSUP handling: -a/--preserve=all silent, --preserve=xattr errors
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_cp_xattr_enotsup_handling() {
     use std::process::Command;
     let scene = TestScenario::new(util_name!());

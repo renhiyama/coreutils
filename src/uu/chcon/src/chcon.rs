@@ -5,7 +5,7 @@
 
 // spell-checker:ignore (vars) RFILE
 
-#![cfg(any(target_os = "linux", target_os = "android"))]
+#![cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #![allow(clippy::upper_case_acronyms)]
 
 use clap::builder::ValueParser;

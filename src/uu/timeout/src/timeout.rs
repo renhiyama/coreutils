@@ -358,7 +358,7 @@ fn timeout(
 
     #[cfg(unix)]
     {
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "runixos"))]
         let death_sig = Signal::try_from(signal as i32).ok();
         let sigpipe_was_ignored = uucore::signals::sigpipe_was_ignored();
         let stdin_was_closed = uucore::signals::stdin_was_closed();
@@ -376,7 +376,7 @@ fn timeout(
                 if stdin_was_closed {
                     libc::close(libc::STDIN_FILENO);
                 }
-                #[cfg(target_os = "linux")]
+                #[cfg(any(target_os = "linux", target_os = "runixos"))]
                 if let Some(sig) = death_sig {
                     let _ = nix::sys::prctl::set_pdeathsig(sig);
                 }

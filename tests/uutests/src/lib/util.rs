@@ -1339,7 +1339,7 @@ pub struct TestScenario {
     pub util_name: String,
     pub fixtures: AtPath,
     tmpd: Rc<TempDir>,
-    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
     tmp_fs_mountpoint: Option<String>,
 }
 
@@ -1355,7 +1355,7 @@ impl TestScenario {
             util_name: util_name.as_ref().into(),
             fixtures: AtPath::new(tmpd.as_ref().path()),
             tmpd,
-            #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+            #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
             tmp_fs_mountpoint: None,
         };
         let mut fixture_path_builder = env::current_dir().unwrap();
@@ -1403,7 +1403,7 @@ impl TestScenario {
     }
 
     /// Mounts a temporary filesystem at the specified mount point.
-    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
     pub fn mount_temp_fs(&mut self, mount_point: &str) -> core::result::Result<(), String> {
         if self.tmp_fs_mountpoint.is_some() {
             return Err("already mounted".to_string());
@@ -1424,7 +1424,7 @@ impl TestScenario {
         Ok(())
     }
 
-    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
     /// Unmounts the temporary filesystem if it is currently mounted.
     pub fn umount_temp_fs(&mut self) {
         if let Some(mount_point) = self.tmp_fs_mountpoint.as_ref() {
@@ -1436,7 +1436,7 @@ impl TestScenario {
 
 impl Drop for TestScenario {
     fn drop(&mut self) {
-        #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+        #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
         self.umount_temp_fs();
     }
 }
@@ -2915,7 +2915,7 @@ pub fn pty_path() -> (String, OwnedFd, OwnedFd) {
 pub fn host_name_for(util_name: &str) -> Cow<'_, str> {
     // In some environments, e.g. macOS/freebsd, the GNU coreutils are prefixed with "g"
     // to not interfere with the BSD counterparts already in `$PATH`.
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
     {
         // make call to `host_name_for` idempotent
         if util_name.starts_with('g') && util_name != "groups" {
@@ -2924,7 +2924,7 @@ pub fn host_name_for(util_name: &str) -> Cow<'_, str> {
             format!("g{util_name}").into()
         }
     }
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     util_name.into()
 }
 
@@ -3058,7 +3058,7 @@ pub fn gnu_cmd_result(
         .args(args)
         .run();
 
-    let (stdout, stderr): (String, String) = if cfg!(target_os = "linux") {
+    let (stdout, stderr): (String, String) = if cfg!(any(target_os = "linux", target_os = "runixos")) {
         (
             result.stdout_str().to_string(),
             result.stderr_str_lossy().to_string(),
@@ -3447,7 +3447,7 @@ mod tests {
             Ok(s) => assert!(s.starts_with("uutils-tests-")),
             Err(s) => assert!(s.starts_with("uutils-tests-warning")),
         }
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "runixos"))]
         std::assert_eq!(
             check_coreutil_version("no test name", VERSION_MIN),
             Err("uutils-tests-warning: 'no test name' \
@@ -3472,13 +3472,13 @@ mod tests {
     #[test]
     #[cfg(unix)]
     fn test_host_name_for() {
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "runixos"))]
         {
             std::assert_eq!(host_name_for("id"), "id");
             std::assert_eq!(host_name_for("groups"), "groups");
             std::assert_eq!(host_name_for("who"), "who");
         }
-        #[cfg(not(target_os = "linux"))]
+        #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
         {
             // spell-checker:ignore (strings) ggroups gwho
             std::assert_eq!(host_name_for("id"), "gid");
@@ -3592,7 +3592,7 @@ mod tests {
         std::assert_eq!(p_umask, get_umask()); // make sure parent umask didn't change
     }
 
-    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "freebsd"))]
     #[test]
     fn test_mount_temp_fs() {
         let mut scene = TestScenario::new("util");

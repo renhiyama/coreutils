@@ -476,7 +476,7 @@ fn test_read_from_nonexistent_file() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn test_files_from_pseudo_filesystem() {
     use pretty_assertions::assert_ne;
     let result = new_ucmd!().arg("-c").arg("/proc/cpuinfo").succeeds();
@@ -484,7 +484,7 @@ fn test_files_from_pseudo_filesystem() {
 
     // the following block fails on Android with a "Permission denied" error
     // also skip in case the kernel was not built with profiling support, e.g. WSL
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     {
         let (at, mut ucmd) = at_and_ucmd!();
         if at.file_exists("/sys/kernel/profiling") {
@@ -763,7 +763,7 @@ fn test_files0_progressive_stream() {
         .stdout_only("36 370 2189 total\n");
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_files0_stops_after_stdout_write_error() {
     use std::fs::OpenOptions;

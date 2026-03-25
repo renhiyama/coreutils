@@ -32,7 +32,7 @@ mod options {
 #[cfg(all(
     not(feature = "feat_external_libstdbuf"),
     any(
-        target_os = "linux",
+        any(target_os = "linux", target_os = "runixos"),
         target_os = "android",
         target_os = "freebsd",
         target_os = "netbsd",
@@ -83,7 +83,7 @@ enum ProgramOptionsError {
 }
 
 #[cfg(any(
-    target_os = "linux",
+    any(target_os = "linux", target_os = "runixos"),
     target_os = "android",
     target_os = "freebsd",
     target_os = "netbsd",
@@ -108,7 +108,7 @@ fn preload_strings() -> UResult<(&'static str, &'static str)> {
 }
 
 #[cfg(not(any(
-    target_os = "linux",
+    any(target_os = "linux", target_os = "runixos"),
     target_os = "android",
     target_os = "freebsd",
     target_os = "netbsd",

@@ -54,13 +54,13 @@ fn test_uname_kernel_version() {
 fn test_uname_kernel() {
     let (_, mut ucmd) = at_and_ucmd!();
 
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     {
         let result = ucmd.arg("-o").succeeds();
         assert!(result.stdout_str().to_lowercase().contains("linux"));
     }
 
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
     ucmd.arg("-o").succeeds();
 }
 
@@ -86,12 +86,12 @@ fn test_uname_operating_system() {
         .arg("--operating-system")
         .succeeds()
         .stdout_is("Fuchsia\n");
-    #[cfg(all(target_os = "linux", any(target_env = "gnu", target_env = "")))]
+    #[cfg(all(any(target_os = "linux", target_os = "runixos"), any(target_env = "gnu", target_env = "")))]
     new_ucmd!()
         .arg("--operating-system")
         .succeeds()
         .stdout_is("GNU/Linux\n");
-    #[cfg(all(target_os = "linux", not(any(target_env = "gnu", target_env = ""))))]
+    #[cfg(all(any(target_os = "linux", target_os = "runixos"), not(any(target_env = "gnu", target_env = ""))))]
     new_ucmd!()
         .arg("--operating-system")
         .succeeds()

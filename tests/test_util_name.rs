@@ -129,7 +129,7 @@ fn util_invalid_name_help() {
 // The exact set of permitted filenames depends on many factors. Non-UTF-8 strings
 // work on very few platforms, but linux works, especially because it also increases
 // the likelihood that a filesystem is being used that supports non-UTF-8 filenames.
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn util_non_utf8_name_help() {
     // Make sure we don't crash even if the util name is invalid UTF-8.
     use std::{

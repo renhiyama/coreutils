@@ -1038,7 +1038,7 @@ fn test_touch_f_option() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_touch_non_utf8_paths() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;
@@ -1054,7 +1054,7 @@ fn test_touch_non_utf8_paths() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_touch_device_files() {
     let (_, mut ucmd) = at_and_ucmd!();
     ucmd.args(&["/dev/null", "/dev/zero", "/dev/full", "/dev/random"])

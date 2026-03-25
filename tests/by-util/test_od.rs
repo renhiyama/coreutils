@@ -7,7 +7,7 @@
 
 #[cfg(unix)]
 use std::io::Read;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::path::Path;
 
 use unindent::unindent;
@@ -833,7 +833,7 @@ fn test_skip_bytes_prints_after_consuming_multiple_inputs() {
     );
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_skip_bytes_proc_file_without_seeking() {
     let proc_path = Path::new("/proc/version");
@@ -1262,7 +1262,7 @@ fn test_od_eintr_handling() {
 
 // Regression test: od should handle write errors to /dev/full without aborting.
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_write_error_dev_full() {
     use std::fs::File;
 

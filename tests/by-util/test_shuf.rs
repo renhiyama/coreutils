@@ -852,7 +852,7 @@ fn test_range_repeat_empty_minus_one() {
 
 // This test fails if we forget to flush the `BufWriter`.
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn write_errors_are_reported() {
     new_ucmd!()
         .arg("-i1-10")

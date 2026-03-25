@@ -1948,7 +1948,7 @@ mod check_encoding {
 
     // This test should pass on linux. Windows and macos will fail to
     // create a file which name contains '\xff'.
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     #[test]
     fn test_check_non_utf8_filename() {
         use super::*;
@@ -1993,7 +1993,7 @@ mod check_encoding {
             .stderr_contains("1 listed file could not be read");
     }
 
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     #[test]
     fn test_quoting_in_stderr() {
         use super::*;
@@ -3069,7 +3069,7 @@ mod debug_flag {
 }
 
 #[test]
-#[cfg(all(target_os = "linux", not(target_env = "musl")))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), not(target_env = "musl")))]
 fn test_check_file_with_io_error() {
     // /proc/self/mem causes EIO when read without proper seeking
     new_ucmd!()
@@ -3083,7 +3083,7 @@ fn test_check_file_with_io_error() {
 }
 
 #[test]
-#[cfg(all(target_os = "linux", not(target_env = "musl")))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), not(target_env = "musl")))]
 fn test_check_checkfile_with_io_error() {
     // /proc/self/mem causes EIO when read without proper seeking
     new_ucmd!()

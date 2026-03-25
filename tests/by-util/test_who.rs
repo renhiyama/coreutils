@@ -29,7 +29,7 @@ fn test_count() {
 #[test]
 #[cfg(not(target_os = "openbsd"))]
 #[cfg_attr(
-    all(target_arch = "aarch64", target_os = "linux"),
+    all(target_arch = "aarch64", any(target_os = "linux", target_os = "runixos")),
     ignore = "Issue #7174 - Test not supported on ARM64 Linux"
 )]
 fn test_boot() {
@@ -110,7 +110,7 @@ fn test_runlevel() {
         let expected_stdout = unwrap_or_return!(expected_result(&ts, &[opt])).stdout_move_str();
         ts.ucmd().arg(opt).succeeds().stdout_is(expected_stdout);
 
-        #[cfg(not(target_os = "linux"))]
+        #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
         ts.ucmd().arg(opt).succeeds().stdout_is("");
     }
 }

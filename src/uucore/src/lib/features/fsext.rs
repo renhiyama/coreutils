@@ -7,9 +7,9 @@
 
 // spell-checker:ignore DATETIME getmntinfo subsecond (fs) cifs smbfs
 
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "cygwin"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "cygwin"))]
 const LINUX_MTAB: &str = "/etc/mtab";
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "cygwin"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "cygwin"))]
 const LINUX_MOUNTINFO: &str = "/proc/self/mountinfo";
 #[cfg(all(unix, not(any(target_os = "aix", target_os = "redox"))))]
 static MOUNT_OPT_BIND: &str = "bind";
@@ -81,7 +81,7 @@ use std::os::unix::fs::MetadataExt;
 use std::time::Duration;
 
 #[cfg(any(
-    target_os = "linux",
+    any(target_os = "linux", target_os = "runixos"),
     target_os = "android",
     target_vendor = "apple",
     target_os = "freebsd",
@@ -100,7 +100,7 @@ pub use libc::statfs as StatFs;
 pub use libc::statvfs as StatFs;
 
 #[cfg(any(
-    target_os = "linux",
+    any(target_os = "linux", target_os = "runixos"),
     target_os = "android",
     target_vendor = "apple",
     target_os = "freebsd",
@@ -195,7 +195,7 @@ pub struct MountInfo {
     pub dummy: bool,
 }
 
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "cygwin"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "cygwin"))]
 fn replace_special_chars(s: &[u8]) -> Vec<u8> {
     use bstr::ByteSlice;
 
@@ -211,7 +211,7 @@ fn replace_special_chars(s: &[u8]) -> Vec<u8> {
 }
 
 impl MountInfo {
-    #[cfg(any(target_os = "linux", target_os = "android", target_os = "cygwin"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "cygwin"))]
     fn new(file_name: &str, raw: &[&[u8]]) -> Option<Self> {
         use std::ffi::OsStr;
         use std::os::unix::ffi::OsStrExt;
@@ -435,9 +435,9 @@ use crate::error::UResult;
     target_os = "windows"
 ))]
 use crate::error::USimpleError;
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "cygwin"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "cygwin"))]
 use std::fs::File;
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "cygwin"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "cygwin"))]
 use std::io::{BufRead, BufReader};
 #[cfg(any(
     target_vendor = "apple",
@@ -457,7 +457,7 @@ use std::slice;
 
 /// Read file system list.
 pub fn read_fs_list() -> UResult<Vec<MountInfo>> {
-    #[cfg(any(target_os = "linux", target_os = "android", target_os = "cygwin"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "cygwin"))]
     {
         let (file_name, f) = File::open(LINUX_MOUNTINFO)
             .map(|f| (LINUX_MOUNTINFO, f))
@@ -771,7 +771,7 @@ impl FsMeta for StatFs {
         return self.f_ffree.try_into().unwrap();
     }
     #[cfg(any(
-        target_os = "linux",
+        any(target_os = "linux", target_os = "runixos"),
         target_os = "android",
         target_vendor = "apple",
         target_os = "freebsd"
@@ -804,7 +804,7 @@ impl FsMeta for StatFs {
         return self.f_type.try_into().unwrap();
     }
     #[cfg(not(any(
-        target_os = "linux",
+        any(target_os = "linux", target_os = "runixos"),
         target_os = "android",
         target_vendor = "apple",
         target_os = "freebsd"
@@ -814,7 +814,7 @@ impl FsMeta for StatFs {
         unimplemented!()
     }
 
-    #[cfg(any(target_os = "linux", target_os = "android"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
     fn io_size(&self) -> u64 {
         self.f_frsize as u64
     }
@@ -829,7 +829,7 @@ impl FsMeta for StatFs {
     #[cfg(not(any(
         target_vendor = "apple",
         target_os = "freebsd",
-        target_os = "linux",
+        any(target_os = "linux", target_os = "runixos"),
         target_os = "android",
         target_os = "netbsd"
     )))]
@@ -846,7 +846,7 @@ impl FsMeta for StatFs {
     #[cfg(any(
         target_vendor = "apple",
         target_os = "freebsd",
-        target_os = "linux",
+        any(target_os = "linux", target_os = "runixos"),
         target_os = "android",
         target_os = "openbsd"
     ))]
@@ -860,7 +860,7 @@ impl FsMeta for StatFs {
     #[cfg(not(any(
         target_vendor = "apple",
         target_os = "freebsd",
-        target_os = "linux",
+        any(target_os = "linux", target_os = "runixos"),
         target_os = "android",
         target_os = "openbsd"
     )))]
@@ -868,7 +868,7 @@ impl FsMeta for StatFs {
         self.f_fsid as u64
     }
 
-    #[cfg(any(target_os = "linux", target_os = "android"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
     fn namelen(&self) -> u64 {
         self.f_namelen as u64
     }
@@ -884,7 +884,7 @@ impl FsMeta for StatFs {
     #[cfg(not(any(
         target_vendor = "apple",
         target_os = "freebsd",
-        target_os = "linux",
+        any(target_os = "linux", target_os = "runixos"),
         target_os = "android",
         target_os = "netbsd",
         target_os = "openbsd"
@@ -1097,7 +1097,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(any(target_os = "linux", target_os = "android"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
     fn test_mountinfo() {
         // spell-checker:ignore (word) relatime
         let info = MountInfo::new(
@@ -1139,7 +1139,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(any(target_os = "linux", target_os = "android"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
     fn test_mountinfo_dir_special_chars() {
         let info = MountInfo::new(
             LINUX_MOUNTINFO,
@@ -1163,7 +1163,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(any(target_os = "linux", target_os = "android"))]
+    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
     fn test_mountinfo_dir_non_unicode() {
         let info = MountInfo::new(
             LINUX_MOUNTINFO,

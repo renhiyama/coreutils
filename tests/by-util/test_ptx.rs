@@ -232,7 +232,7 @@ fn test_format() {
         .stdout_only("\\xx {}{}{a}{}{}\n");
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 #[test]
 fn test_failed_write_is_reported() {
     new_ucmd!()

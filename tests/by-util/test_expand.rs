@@ -428,7 +428,7 @@ fn test_nonexisting_file() {
 }
 
 #[test]
-#[cfg(all(target_os = "linux", not(target_env = "musl")))]
+#[cfg(all(any(target_os = "linux", target_os = "runixos"), not(target_env = "musl")))]
 fn test_read_error() {
     new_ucmd!()
         .arg("/proc/self/mem")
@@ -437,7 +437,7 @@ fn test_read_error() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_expand_non_utf8_paths() {
     use std::os::unix::ffi::OsStringExt;
     use uutests::at_and_ucmd;

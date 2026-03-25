@@ -4,7 +4,7 @@
 // file that was distributed with this source code.
 // spell-checker:ignore (words) agroupthatdoesntexist auserthatdoesntexist cuuser groupname notexisting passgrp
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 use uucore::process::geteuid;
 use uutests::util::{CmdResult, TestScenario, is_ci, run_ucmd_as_root};
 use uutests::util_name;
@@ -36,9 +36,9 @@ fn skipping_test_is_okay(result: &CmdResult, needle: &str) -> bool {
     false
 }
 
-#[cfg(any(target_os = "linux", target_os = "android", target_os = "windows"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "windows"))]
 const ROOT_GROUP: &str = "root";
-#[cfg(not(any(target_os = "linux", target_os = "android", target_os = "windows")))]
+#[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "windows")))]
 const ROOT_GROUP: &str = "wheel";
 
 #[cfg(test)]
@@ -686,7 +686,7 @@ fn test_root_preserve() {
     result.stderr_contains("chown: it is dangerous to operate recursively");
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[test]
 fn test_big_p() {
     if geteuid() != 0 {

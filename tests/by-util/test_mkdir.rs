@@ -308,7 +308,7 @@ fn test_recursive_reporting() {
 // Windows don't have acl entries
 // TODO Enable and modify this for macos when xattr processing for macos is added.
 // TODO Enable and modify this for freebsd when xattr processing for freebsd is enabled.
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_mkdir_acl() {
     use rustc_hash::FxHashMap;
     use std::ffi::OsString;
@@ -909,7 +909,7 @@ fn test_mkdir_parent_mode_with_explicit_mode() {
 
 /// Test that nested directories inherit the setgid bit with mkdir -p.
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_mkdir_parent_inherits_setgid() {
     let (at, mut ucmd) = at_and_ucmd!();
 

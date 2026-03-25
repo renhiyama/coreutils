@@ -1093,7 +1093,7 @@ fn test_missing_short_tmpdir_flag() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_non_utf8_template() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;
@@ -1107,7 +1107,7 @@ fn test_non_utf8_template() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_non_utf8_tmpdir_path() {
     use std::os::unix::ffi::OsStrExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -1121,7 +1121,7 @@ fn test_non_utf8_tmpdir_path() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_non_utf8_tmpdir_long_option() {
     use std::os::unix::ffi::OsStrExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -1140,7 +1140,7 @@ fn test_non_utf8_tmpdir_long_option() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_invalid_utf8_suffix() {
     use std::os::unix::ffi::OsStrExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -1160,7 +1160,7 @@ fn test_invalid_utf8_suffix() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_non_utf8_tmpdir_directory_creation() {
     use std::os::unix::ffi::OsStrExt;
     let (at, mut ucmd) = at_and_ucmd!();

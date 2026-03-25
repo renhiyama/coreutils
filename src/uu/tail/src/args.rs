@@ -441,9 +441,9 @@ pub fn parse_args(args: impl uucore::Args) -> UResult<Settings> {
 }
 
 pub fn uu_app() -> Command {
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     let polling_help = translate!("tail-help-polling-linux");
-    #[cfg(all(unix, not(target_os = "linux")))]
+    #[cfg(all(unix, not(any(target_os = "linux", target_os = "runixos"))))]
     let polling_help = translate!("tail-help-polling-unix");
     #[cfg(target_os = "windows")]
     let polling_help = translate!("tail-help-polling-windows");

@@ -3,7 +3,7 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-#![cfg(any(target_os = "linux", target_os = "android"))]
+#![cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 
 use std::ffi::OsString;
 use std::fmt::{Display, Formatter, Write};

@@ -9,7 +9,7 @@ use nix::unistd::{read, write};
 use std::fs::File;
 #[cfg(unix)]
 use std::fs::{Permissions, set_permissions};
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::os::unix::ffi::OsStrExt;
 #[cfg(unix)]
 use std::os::unix::fs::PermissionsExt;
@@ -196,7 +196,7 @@ fn test_invalid_file_perms() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_more_non_utf8_paths() {
     let (path, _controller, _replica) = pty_path();
     let (at, mut ucmd) = at_and_ucmd!();

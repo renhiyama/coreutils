@@ -16,14 +16,14 @@ mod progress;
 use crate::bufferedoutput::BufferedOutput;
 use blocks::conv_block_unblock_helper;
 use datastructures::{ConversionMode, IConvFlags, IFlags, OConvFlags, OFlags, options};
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 use nix::fcntl::FcntlArg;
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 use nix::fcntl::OFlag;
 use parseargs::Parser;
 use progress::ProgUpdateType;
 use progress::{ProgUpdate, ReadStat, StatusLevel, WriteStat, gen_prog_updater};
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use progress::{check_and_reset_sigusr1, install_sigusr1_handler};
 use uucore::io::OwnedFileDescriptorOrHandle;
 use uucore::translate;
@@ -35,9 +35,9 @@ use std::ffi::OsString;
 use std::fs::Metadata;
 use std::fs::{File, OpenOptions};
 use std::io::{self, Read, Seek, SeekFrom, Write};
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 use std::os::fd::AsFd;
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 use std::os::unix::fs::OpenOptionsExt;
 #[cfg(unix)]
 use std::os::unix::{
@@ -54,7 +54,7 @@ use std::time::{Duration, Instant};
 
 use clap::{Arg, Command};
 use gcd::Gcd;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use nix::{
     errno::Errno,
     fcntl::{PosixFadviseAdvice, posix_fadvise},
@@ -63,7 +63,7 @@ use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult};
 #[cfg(unix)]
 use uucore::error::{USimpleError, set_exit_code};
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use uucore::show_if_err;
 use uucore::{format_usage, show_error};
 
@@ -314,7 +314,7 @@ impl Source {
     /// source. This function informs the kernel that the specified
     /// portion of the source is no longer needed. If not possible,
     /// then this function returns an error.
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     fn discard_cache(&self, offset: libc::off_t, len: libc::off_t) -> nix::Result<()> {
         #[allow(clippy::match_wildcard_for_single_variants)]
         match self {
@@ -400,7 +400,7 @@ impl<'a> Input<'a> {
             let mut opts = OpenOptions::new();
             opts.read(true);
 
-            #[cfg(any(target_os = "linux", target_os = "android"))]
+            #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
             if let Some(libc_flags) = make_linux_iflags(&settings.iflags) {
                 opts.custom_flags(libc_flags);
             }
@@ -422,7 +422,7 @@ impl<'a> Input<'a> {
     fn new_fifo(filename: &Path, settings: &'a Settings) -> UResult<Self> {
         let mut opts = OpenOptions::new();
         opts.read(true);
-        #[cfg(any(target_os = "linux", target_os = "android"))]
+        #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
         opts.custom_flags(make_linux_iflags(&settings.iflags).unwrap_or(0));
         let mut src = Source::Fifo(opts.open(filename)?);
         if settings.skip > 0 {
@@ -432,7 +432,7 @@ impl<'a> Input<'a> {
     }
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn make_linux_iflags(iflags: &IFlags) -> Option<libc::c_int> {
     let mut flag = 0;
 
@@ -495,9 +495,9 @@ impl Input<'_> {
     /// the input file is no longer needed. If not possible, then this
     /// function prints an error message to stderr and sets the exit
     /// status code to 1.
-    #[cfg_attr(not(target_os = "linux"), allow(clippy::unused_self, unused_variables))]
+    #[cfg_attr(not(any(target_os = "linux", target_os = "runixos")), allow(clippy::unused_self, unused_variables))]
     fn discard_cache(&self, offset: libc::off_t, len: libc::off_t) {
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "runixos"))]
         {
             let file = self
                 .settings
@@ -510,7 +510,7 @@ impl Input<'_> {
                 )
             );
         }
-        #[cfg(not(target_os = "linux"))]
+        #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
         {
             // TODO Is there a way to discard filesystem cache on
             // these other operating systems?
@@ -696,7 +696,7 @@ impl Dest {
     /// destination. This function informs the kernel that the
     /// specified portion of the destination is no longer needed. If
     /// not possible, then this function returns an error.
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     fn discard_cache(&self, offset: libc::off_t, len: libc::off_t) -> nix::Result<()> {
         match self {
             Self::File(f, _) => {
@@ -715,7 +715,7 @@ fn is_sparse(buf: &[u8]) -> bool {
 
 /// Handle O_DIRECT write errors by temporarily removing the flag and retrying.
 /// This follows GNU dd behavior for partial block writes with O_DIRECT.
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn handle_o_direct_write(f: &mut File, buf: &[u8], original_error: io::Error) -> io::Result<usize> {
     use nix::fcntl::{FcntlArg, OFlag, fcntl};
 
@@ -752,7 +752,7 @@ fn handle_o_direct_write(f: &mut File, buf: &[u8], original_error: io::Error) ->
 }
 
 /// Stub for non-Linux platforms - just return the original error.
-#[cfg(not(any(target_os = "linux", target_os = "android")))]
+#[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
 fn handle_o_direct_write(
     _f: &mut File,
     _buf: &[u8],
@@ -840,7 +840,7 @@ impl<'a> Output<'a> {
                 .create_new(cflags.excl)
                 .append(oflags.append);
 
-            #[cfg(any(target_os = "linux", target_os = "android"))]
+            #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
             if let Some(libc_flags) = make_linux_oflags(oflags) {
                 opts.custom_flags(libc_flags);
             }
@@ -886,7 +886,7 @@ impl<'a> Output<'a> {
     /// (current position) that shall be used.
     fn new_file_from_stdout(settings: &'a Settings) -> UResult<Self> {
         let fx = OwnedFileDescriptorOrHandle::from(io::stdout())?;
-        #[cfg(any(target_os = "linux", target_os = "android"))]
+        #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
         if let Some(libc_flags) = make_linux_oflags(&settings.oflags) {
             nix::fcntl::fcntl(
                 fx.as_raw().as_fd(),
@@ -920,7 +920,7 @@ impl<'a> Output<'a> {
             .create(!settings.oconv.nocreat)
             .create_new(settings.oconv.excl)
             .append(settings.oflags.append);
-        #[cfg(any(target_os = "linux", target_os = "android"))]
+        #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
         opts.custom_flags(make_linux_oflags(&settings.oflags).unwrap_or(0));
         let dst = Dest::Fifo(opts.open(filename)?);
         Ok(Self { dst, settings })
@@ -933,9 +933,9 @@ impl<'a> Output<'a> {
     /// the output file is no longer needed. If not possible, then
     /// this function prints an error message to stderr and sets the
     /// exit status code to 1.
-    #[cfg_attr(not(target_os = "linux"), allow(clippy::unused_self, unused_variables))]
+    #[cfg_attr(not(any(target_os = "linux", target_os = "runixos")), allow(clippy::unused_self, unused_variables))]
     fn discard_cache(&self, offset: libc::off_t, len: libc::off_t) {
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "runixos"))]
         {
             let file = self
                 .settings
@@ -948,7 +948,7 @@ impl<'a> Output<'a> {
                 )
             );
         }
-        #[cfg(not(target_os = "linux"))]
+        #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
         {
             // TODO Is there a way to discard filesystem cache on
             // these other operating systems?
@@ -1176,7 +1176,7 @@ fn dd_copy(mut i: Input, o: Output) -> io::Result<()> {
     // This avoids the need to query the OS monotonic clock for every block.
     let alarm = Alarm::with_interval(Duration::from_secs(1));
 
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     if let Err(e) = install_sigusr1_handler() {
         if i.settings.status != Some(StatusLevel::None) {
             eprintln!("{}\n\t{e}", translate!("dd-warning-signal-handler"));
@@ -1258,7 +1258,7 @@ fn dd_copy(mut i: Input, o: Output) -> io::Result<()> {
         // error.
         rstat += rstat_update;
         wstat += wstat_update;
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "runixos"))]
         if check_and_reset_sigusr1() {
             alarm.manual_trigger();
         }
@@ -1313,7 +1313,7 @@ fn finalize<T>(
     Ok(())
 }
 
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 #[allow(clippy::cognitive_complexity)]
 fn make_linux_oflags(oflags: &OFlags) -> Option<libc::c_int> {
     let mut flag = 0;

@@ -3,7 +3,7 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 use regex::Regex;
-#[cfg(any(target_os = "linux", target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
 use std::fs::OpenOptions;
 use uutests::new_ucmd;
 
@@ -50,7 +50,7 @@ fn test_conflict() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
 fn test_full() {
     for option in ["--version", "--help"] {
         let dev_full = OpenOptions::new().write(true).open("/dev/full").unwrap();

@@ -11,14 +11,14 @@ use std::fmt;
 use std::num::{IntErrorKind, ParseIntError};
 
 use crate::display::Quotable;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use procfs::{Current, Meminfo};
 
 /// Error arising from trying to compute system memory.
 enum SystemError {
     IOError,
     ParseError,
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
     NotFound,
 }
 
@@ -42,14 +42,14 @@ impl From<ParseIntError> for SystemError {
 ///
 /// If there is a problem reading the file or finding the appropriate
 /// entry in the file.
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn total_physical_memory() -> Result<u128, SystemError> {
     let info = Meminfo::current().map_err(|_| SystemError::IOError)?;
     Ok((info.mem_total as u128).saturating_mul(1024))
 }
 
 /// Return the number of bytes of memory that appear to be currently available.
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 pub fn available_memory_bytes() -> Option<u128> {
     let info = Meminfo::current().ok()?;
 
@@ -72,7 +72,7 @@ pub fn available_memory_bytes() -> Option<u128> {
 }
 
 /// Return `None` when the platform does not expose Linux-like `/proc/meminfo`.
-#[cfg(not(target_os = "linux"))]
+#[cfg(not(any(target_os = "linux", target_os = "runixos")))]
 pub fn available_memory_bytes() -> Option<u128> {
     None
 }
@@ -80,7 +80,7 @@ pub fn available_memory_bytes() -> Option<u128> {
 /// Get the total number of bytes of physical memory.
 ///
 /// TODO Implement this for non-Linux systems.
-#[cfg(not(target_os = "linux"))]
+#[cfg(not(any(target_os = "linux", target_os = "runixos")))]
 fn total_physical_memory() -> Result<u128, SystemError> {
     Err(SystemError::NotFound)
 }
@@ -805,7 +805,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "runixos"))]
     fn parse_percent() {
         assert!(parse_size_u64("0%").is_ok());
         assert!(parse_size_u64("50%").is_ok());

@@ -1541,7 +1541,7 @@ fn test_stdin_no_trailing_newline() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_csplit_non_utf8_paths() {
     use std::os::unix::ffi::OsStringExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -1554,7 +1554,7 @@ fn test_csplit_non_utf8_paths() {
 
 /// Test write error detection using /dev/full
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_write_error_dev_full() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.symlink_file("/dev/full", "xx01");
@@ -1570,7 +1570,7 @@ fn test_write_error_dev_full() {
 
 /// Test write error with -k keeps files
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_write_error_dev_full_keep_files() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.symlink_file("/dev/full", "xx01");

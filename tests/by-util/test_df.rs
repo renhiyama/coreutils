@@ -15,7 +15,7 @@ use std::collections::HashSet;
 #[cfg(not(any(target_os = "freebsd", target_os = "windows")))]
 use uutests::at_and_ucmd;
 use uutests::new_ucmd;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use uutests::util::TestScenario;
 
 #[test]
@@ -409,7 +409,7 @@ fn test_include_exclude_same_type() {
 }
 
 #[cfg_attr(
-    all(target_arch = "aarch64", target_os = "linux"),
+    all(target_arch = "aarch64", any(target_os = "linux", target_os = "runixos")),
     ignore = "Issue #7158 - Test not supported on ARM64 Linux"
 )]
 #[test]
@@ -1050,7 +1050,7 @@ fn test_nonexistent_file() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_df_all_shows_binfmt_misc() {
     // Check if binfmt_misc is mounted
     let is_mounted = std::fs::read_to_string("/proc/self/mountinfo")
@@ -1072,7 +1072,7 @@ fn test_df_all_shows_binfmt_misc() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_df_hides_binfmt_misc_by_default() {
     // Check if binfmt_misc is mounted
     let is_mounted = std::fs::read_to_string("/proc/self/mountinfo")
@@ -1096,7 +1096,7 @@ fn test_df_hides_binfmt_misc_by_default() {
 
 /// Run df inside a mount namespace where /proc is masked with tmpfs.
 /// Returns (success, stdout, stderr).
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn run_df_with_masked_proc(args: &str) -> Option<(bool, String, String)> {
     use std::process::Command;
 
@@ -1128,7 +1128,7 @@ fn run_df_with_masked_proc(args: &str) -> Option<(bool, String, String)> {
 
 /// Test df fallback when /proc is masked - should work with path, fail without or with filters.
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_df_masked_proc_fallback() {
     if let Some((ok, stdout, stderr)) = run_df_with_masked_proc(".") {
         assert!(ok, "df . should succeed: {stderr}");

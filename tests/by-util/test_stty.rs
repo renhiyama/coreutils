@@ -325,7 +325,7 @@ fn test_row_column_hex_octal() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "android"))]
+#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
 fn line() {
     new_ucmd!()
         .args(&["line"])

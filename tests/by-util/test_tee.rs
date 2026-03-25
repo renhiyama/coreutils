@@ -182,7 +182,7 @@ fn test_tee_output_not_buffered() {
     handle.join().unwrap();
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 mod linux_only {
     use uutests::util::{AtPath, CmdResult, UCommand};
 

@@ -2,7 +2,7 @@
 //
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 use std::os::unix::ffi::OsStringExt;
 use uutests::at_and_ucmd;
 use uutests::new_ucmd;
@@ -84,7 +84,7 @@ fn test_invalid_metadata() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "runixos"))]
 fn test_sum_non_utf8_paths() {
     let (at, mut ucmd) = at_and_ucmd!();
 
