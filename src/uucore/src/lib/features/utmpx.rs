@@ -58,7 +58,7 @@ pub use libc::setutxent;
 use libc::utmpx;
 #[cfg(any(
     target_vendor = "apple",
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_os = "netbsd",
     target_os = "cygwin"
 ))]
@@ -84,7 +84,7 @@ macro_rules! chars2string {
     };
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 mod ut {
     pub static DEFAULT_FILE: &str = "/var/run/utmp";
 
@@ -248,14 +248,14 @@ impl Utmpx {
     /// A.K.A. ut.ut_exit
     ///
     /// Return (e_termination, e_exit)
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     pub fn exit_status(&self) -> (i16, i16) {
         (self.inner.ut_exit.e_termination, self.inner.ut_exit.e_exit)
     }
     /// A.K.A. ut.ut_exit
     ///
     /// Return (0, 0) on Non-Linux platform
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     pub fn exit_status(&self) -> (i16, i16) {
         (0, 0)
     }

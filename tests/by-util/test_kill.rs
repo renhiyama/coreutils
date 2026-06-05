@@ -67,7 +67,7 @@ fn test_kill_list_all_signals() {
         .stdout_contains("EXIT");
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_kill_list_contains_realtime_signals() {
     new_ucmd!()
@@ -95,7 +95,7 @@ fn test_kill_list_all_signals_as_table() {
         .stdout_contains("EXIT");
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_kill_table_contains_realtime_signals() {
     new_ucmd!()
@@ -138,7 +138,7 @@ fn test_kill_list_one_signal_from_number() {
         .stdout_only("KILL\n");
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_kill_list_rtmax_from_name() {
     new_ucmd!()
@@ -415,7 +415,7 @@ fn test_kill_with_list_lower_bits_unrecognized() {
     new_ucmd!().arg("-l").arg("384").fails();
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_kill_with_list_unnamed_signal_numbers() {
     new_ucmd!()
@@ -430,7 +430,7 @@ fn test_kill_with_list_unnamed_signal_numbers() {
         .stdout_only("33\n");
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_kill_with_list_all_signal_numbers_up_to_last_named_signal() {
     let last_signal_name = new_ucmd!()

@@ -1,7 +1,0 @@
-[files]
-extend-exclude = [
-    ".git/"
-]
-
-[default.extend-words]
-"nto" = "nto"

@@ -46,7 +46,7 @@ pub const CONTROL_FLAGS: &[Flag<C>] = &[
     Flag::new("parodd", C::PARODD),
     #[cfg(any(
         target_os = "android",
-        all(any(target_os = "linux", target_os = "runixos"), not(target_arch = "mips"))
+        all(any(target_os = "linux"), not(target_arch = "mips"))
     ))]
     Flag::new("cmspar", C::CMSPAR),
     Flag::new_grouped("cs5", C::CS5, C::CSIZE),
@@ -77,7 +77,7 @@ pub const INPUT_FLAGS: &[Flag<I>] = &[
     // Flag::new("iuclc", I::IUCLC),
     Flag::new("ixany", I::IXANY),
     Flag::new("imaxbel", I::IMAXBEL).sane(),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos"), target_os = "macos"))]
+    #[cfg(any(target_os = "android", any(target_os = "linux"), target_os = "macos"))]
     Flag::new("iutf8", I::IUTF8),
 ];
 
@@ -86,7 +86,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
     #[cfg(any(
         target_os = "android",
         target_os = "haiku",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "openbsd"
     ))]
     Flag::new("olcuc", O::OLCUC),
@@ -98,7 +98,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new("ofdel", O::OFDEL),
@@ -106,7 +106,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("nl0", O::NL0, O::NLDLY).sane(),
@@ -114,7 +114,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("nl1", O::NL1, O::NLDLY),
@@ -122,7 +122,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("cr0", O::CR0, O::CRDLY).sane(),
@@ -130,7 +130,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("cr1", O::CR1, O::CRDLY),
@@ -138,7 +138,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("cr2", O::CR2, O::CRDLY),
@@ -146,7 +146,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("cr3", O::CR3, O::CRDLY),
@@ -154,7 +154,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("tab0", O::TAB0, O::TABDLY).sane(),
@@ -162,7 +162,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("tab1", O::TAB1, O::TABDLY),
@@ -170,7 +170,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("tab2", O::TAB2, O::TABDLY),
@@ -178,7 +178,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("tab3", O::TAB3, O::TABDLY),
@@ -186,7 +186,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("bs0", O::BS0, O::BSDLY).sane(),
@@ -194,7 +194,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("bs1", O::BS1, O::BSDLY),
@@ -202,7 +202,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("vt0", O::VT0, O::VTDLY).sane(),
@@ -210,7 +210,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("vt1", O::VT1, O::VTDLY),
@@ -218,7 +218,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("ff0", O::FF0, O::FFDLY).sane(),
@@ -226,7 +226,7 @@ pub const OUTPUT_FLAGS: &[Flag<O>] = &[
         target_os = "android",
         target_os = "haiku",
         target_os = "ios",
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos"
     ))]
     Flag::new_grouped("ff1", O::FF1, O::FFDLY),
@@ -279,38 +279,38 @@ pub const BAUD_RATES: &[(&str, BaudRate)] = &[
     ("57600", BaudRate::B57600),
     ("115200", BaudRate::B115200),
     ("230400", BaudRate::B230400),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(any(target_os = "android", any(target_os = "linux")))]
     ("500000", BaudRate::B500000),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(any(target_os = "android", any(target_os = "linux")))]
     ("576000", BaudRate::B576000),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(any(target_os = "android", any(target_os = "linux")))]
     ("921600", BaudRate::B921600),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(any(target_os = "android", any(target_os = "linux")))]
     ("1000000", BaudRate::B1000000),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(any(target_os = "android", any(target_os = "linux")))]
     ("1152000", BaudRate::B1152000),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(any(target_os = "android", any(target_os = "linux")))]
     ("1500000", BaudRate::B1500000),
-    #[cfg(any(target_os = "android", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(any(target_os = "android", any(target_os = "linux")))]
     ("2000000", BaudRate::B2000000),
     #[cfg(any(
         target_os = "android",
-        all(any(target_os = "linux", target_os = "runixos"), not(target_arch = "sparc64"))
+        all(any(target_os = "linux"), not(target_arch = "sparc64"))
     ))]
     ("2500000", BaudRate::B2500000),
     #[cfg(any(
         target_os = "android",
-        all(any(target_os = "linux", target_os = "runixos"), not(target_arch = "sparc64"))
+        all(any(target_os = "linux"), not(target_arch = "sparc64"))
     ))]
     ("3000000", BaudRate::B3000000),
     #[cfg(any(
         target_os = "android",
-        all(any(target_os = "linux", target_os = "runixos"), not(target_arch = "sparc64"))
+        all(any(target_os = "linux"), not(target_arch = "sparc64"))
     ))]
     ("3500000", BaudRate::B3500000),
     #[cfg(any(
         target_os = "android",
-        all(any(target_os = "linux", target_os = "runixos"), not(target_arch = "sparc64"))
+        all(any(target_os = "linux"), not(target_arch = "sparc64"))
     ))]
     ("4000000", BaudRate::B4000000),
 ];
@@ -334,7 +334,7 @@ pub const CONTROL_CHARS: &[(&str, S)] = &[
     // Alternate end-of-line character.
     ("eol2", S::VEOL2),
     // Switch character (only on Linux).
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     ("swtch", S::VSWTC),
     // Starts output after it has been stopped.
     ("start", S::VSTART),

@@ -7,12 +7,12 @@
 #[cfg(not(target_os = "openbsd"))]
 use filetime::FileTime;
 use std::fs;
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use std::os::unix::ffi::OsStringExt;
 use std::os::unix::fs::{MetadataExt, PermissionsExt};
 #[cfg(not(windows))]
 use std::process;
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 use std::thread::sleep;
 use uucore::process::{getegid, geteuid};
 #[cfg(feature = "feat_selinux")]
@@ -490,7 +490,7 @@ fn test_install_copy_file() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_install_target_file_dev_null() {
     let (at, mut ucmd) = at_and_ucmd!();
 
@@ -687,7 +687,7 @@ fn test_install_copy_then_compare_file() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_install_copy_then_compare_file_with_extra_mode() {
     let scene = TestScenario::new(util_name!());
     let at = &scene.fixtures;
@@ -2494,7 +2494,7 @@ fn test_install_compare_with_mode_bits() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_install_non_utf8_paths() {
     let (at, mut ucmd) = at_and_ucmd!();
     let source_filename = std::ffi::OsString::from_vec(vec![0xFF, 0xFE]);

@@ -623,7 +623,7 @@ fn test_mv_symlink_into_target() {
     ucmd.arg("dir-link").arg("dir").succeeds();
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_mv_broken_symlink_to_another_fs() {
     use tempfile::TempDir;
@@ -1575,7 +1575,7 @@ fn test_mv_verbose() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))] // mkdir does not support -m on windows. Freebsd doesn't return a permission error either.
+#[cfg(any(any(target_os = "linux"), target_os = "android"))] // mkdir does not support -m on windows. Freebsd doesn't return a permission error either.
 #[cfg(feature = "mkdir")]
 fn test_mv_permission_error() {
     let scene = TestScenario::new("mkdir");
@@ -1919,7 +1919,7 @@ fn test_move_should_not_fallback_to_copy() {
 // mv: try to overwrite 'b', overriding mode 0444 (r--r--r--)? y
 // 'a' -> 'b'
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 mod inter_partition_copying {
     use std::fs::{self, set_permissions, write};
     use std::os::unix::fs::{PermissionsExt, symlink};
@@ -2599,7 +2599,7 @@ fn test_special_file_different_filesystem() {
 /// This test mimics the scenario from the GNU part-fail test where
 /// a cross-device move fails due to permission errors when removing the target file
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_mv_cross_device_permission_denied() {
     use std::fs::{set_permissions, write};
     use std::os::unix::fs::PermissionsExt;
@@ -2720,7 +2720,7 @@ fn test_mv_error_usage_display_too_few() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_mv_verbose_directory_recursive() {
     use tempfile::TempDir;
 
@@ -2843,7 +2843,7 @@ fn test_mv_no_prompt_unwriteable_file_with_no_tty() {
 
 /// Test mv silently succeeds when dest filesystem doesn't support xattrs (ENOTSUP)
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_mv_xattr_enotsup_silent() {
     use std::process::Command;
     let scene = TestScenario::new(util_name!());
@@ -2868,7 +2868,7 @@ fn test_mv_xattr_enotsup_silent() {
 /// Test that symlinks inside directories are preserved during cross-device moves
 /// (not expanded into full copies of their targets)
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_mv_cross_device_symlink_preserved() {
     use std::fs;
     use std::os::unix::fs::symlink;
@@ -2915,7 +2915,7 @@ fn test_mv_cross_device_symlink_preserved() {
 
 /// Test that broken/dangling symlinks are preserved during cross-device moves
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_mv_cross_device_broken_symlink_preserved() {
     use std::fs;
     use std::os::unix::fs::symlink;
@@ -2960,7 +2960,7 @@ fn test_mv_cross_device_broken_symlink_preserved() {
 
 /// Test that symlinks to regular files are preserved during cross-device moves
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_mv_cross_device_file_symlink_preserved() {
     use std::fs;
     use std::os::unix::fs::symlink;

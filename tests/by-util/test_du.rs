@@ -33,7 +33,7 @@ fn test_du_basics() {
 
     let result = ts.ucmd().succeeds();
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &[]));
         if result_reference.succeeded() {
@@ -96,7 +96,7 @@ fn test_du_basics_subdir() {
 
     let result = ts.ucmd().arg(SUB_DIR).succeeds();
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &[SUB_DIR]));
         if result_reference.succeeded() {
@@ -421,7 +421,7 @@ fn test_du_soft_link() {
 
     let result = ts.ucmd().arg("subdir/links").succeeds();
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &["subdir/links"]));
         if result_reference.succeeded() {
@@ -492,7 +492,7 @@ fn test_du_hard_link() {
 
     let result = ts.ucmd().arg(SUB_DIR_LINKS).succeeds();
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &[SUB_DIR_LINKS]));
         if result_reference.succeeded() {
@@ -539,7 +539,7 @@ fn test_du_d_flag() {
 
     let result = ts.ucmd().arg("-d1").succeeds();
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &["-d1"]));
         if result_reference.succeeded() {
@@ -587,7 +587,7 @@ fn test_du_dereference() {
 
     let result = ts.ucmd().arg("-L").arg(SUB_DIR_LINKS).succeeds();
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &["-L", SUB_DIR_LINKS]));
 
@@ -685,7 +685,7 @@ fn test_du_no_dereference() {
         // ensure dereference "wins"
         let result = ts.ucmd().arg(arg).arg("--dereference").succeeds();
 
-        #[cfg(any(target_os = "linux", target_os = "runixos"))]
+        #[cfg(any(target_os = "linux"))]
         {
             let result_reference = unwrap_or_return!(expected_result(&ts, &[arg, "--dereference"]));
 
@@ -694,7 +694,7 @@ fn test_du_no_dereference() {
             }
         }
 
-        #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+        #[cfg(not(any(target_os = "linux")))]
         result.stdout_contains(symlink).stdout_does_not_contain(dir);
     }
 }
@@ -741,7 +741,7 @@ fn test_du_inodes() {
     result.stdout_contains("3\t./subdir/links\n");
     result.stdout_contains("3\t.\n");
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference =
             unwrap_or_return!(expected_result(&ts, &["--separate-dirs", "--inodes"]));
@@ -1061,7 +1061,7 @@ fn test_du_no_permission() {
     let result = ts.ucmd().arg(SUB_DIR_LINKS).fails();
     result.stderr_contains("du: cannot read directory 'subdir/links': Permission denied");
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &[SUB_DIR_LINKS]));
         if result_reference
@@ -1106,7 +1106,7 @@ fn test_du_one_file_system() {
 
     let result = ts.ucmd().arg("-x").arg("subdir/deeper").succeeds();
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         let result_reference = unwrap_or_return!(expected_result(&ts, &["-x", "subdir/deeper"]));
         if result_reference.succeeded() {
@@ -1773,7 +1773,7 @@ fn test_du_threshold_no_suggested_values() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_du_long_path_safe_traversal() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -1846,7 +1846,7 @@ fn test_du_safe_traversal_with_symlinks() {
     assert!(!result.stdout_str().is_empty());
 }
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_du_inaccessible_directory() {
     // tested by tests/du/no-x
     let ts = TestScenario::new(util_name!());
@@ -1945,7 +1945,7 @@ fn test_du_symlink_depth_tracking() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_du_long_path_from_unreadable() {
     // Test the specific scenario from GNU's long-from-unreadable.sh test
     // This verifies that du can handle very long paths when the current directory is unreadable
@@ -2005,7 +2005,7 @@ fn test_du_long_path_from_unreadable() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_du_hard_links_multiple_dirs_in_args() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -2022,7 +2022,7 @@ fn test_du_hard_links_multiple_dirs_in_args() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_du_hard_links_multiple_links_in_args() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -2041,7 +2041,7 @@ fn test_du_hard_links_multiple_links_in_args() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_du_symlinks_multiple_links_in_args() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;

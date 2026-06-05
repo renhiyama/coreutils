@@ -4,7 +4,7 @@
 // file that was distributed with this source code.
 
 // spell-checker:ignore plass samp FFFD
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use std::os::unix::ffi::OsStringExt;
 use uutests::new_ucmd;
 
@@ -394,7 +394,7 @@ fn test_fmt_knuth_plass_line_breaking() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_fmt_non_utf8_paths() {
     use uutests::at_and_ucmd;
 

@@ -429,7 +429,7 @@ fn test_delimiters() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_readlink_non_utf8_paths() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;

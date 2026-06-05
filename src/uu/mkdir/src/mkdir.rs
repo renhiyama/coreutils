@@ -11,7 +11,7 @@ use clap::{Arg, ArgAction, ArgMatches, Command};
 use std::ffi::OsString;
 use std::io::{Write, stdout};
 use std::path::{Path, PathBuf};
-#[cfg(all(unix, any(target_os = "linux", target_os = "runixos")))]
+#[cfg(all(unix, any(target_os = "linux")))]
 use uucore::error::FromIo;
 use uucore::error::{UResult, USimpleError};
 use uucore::translate;
@@ -197,7 +197,7 @@ pub fn mkdir(path: &Path, config: &Config) -> UResult<()> {
 }
 
 /// Only needed on Linux to add ACL permission bits after directory creation.
-#[cfg(all(unix, any(target_os = "linux", target_os = "runixos")))]
+#[cfg(all(unix, any(target_os = "linux")))]
 fn chmod(path: &Path, mode: u32) -> UResult<()> {
     use std::fs::{Permissions, set_permissions};
     use std::os::unix::fs::PermissionsExt;
@@ -322,7 +322,7 @@ fn create_single_dir(path: &Path, is_parent: bool, config: &Config) -> UResult<(
 
             // On Linux, we may need to add ACL permission bits via chmod.
             // On other Unix systems, the directory was already created with the correct mode.
-            #[cfg(all(unix, any(target_os = "linux", target_os = "runixos")))]
+            #[cfg(all(unix, any(target_os = "linux")))]
             if !path_exists {
                 // TODO: Make this macos and freebsd compatible by creating a function to get permission bits from
                 // acl in extended attributes

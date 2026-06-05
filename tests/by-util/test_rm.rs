@@ -218,7 +218,7 @@ fn test_recursive_multiple() {
     assert!(!at.file_exists(file_b));
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_recursive_long_filepath() {
     let (at, mut ucmd) = at_and_ucmd!();
@@ -1072,10 +1072,10 @@ fn test_inaccessible_dir_recursive() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "wasi"))]
+#[cfg(any(any(target_os = "linux"), target_os = "wasi"))]
 fn test_non_utf8_paths() {
     use std::ffi::OsStr;
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     use std::os::unix::ffi::OsStrExt;
     #[cfg(target_os = "wasi")]
     use std::os::wasi::ffi::OsStrExt;
@@ -1110,7 +1110,7 @@ fn test_non_utf8_paths() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_rm_recursive_long_path_safe_traversal() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;

@@ -109,7 +109,7 @@ xattr = { workspace = true, optional = true }
 [dev-dependencies]
 tempfile = { workspace = true }
 
-[target.'cfg(any(target_os = "linux", target_os = "runixos"))'.dependencies]
+[target.'cfg(any(target_os = "linux"))'.dependencies]
 procfs = { workspace = true, optional = true }
 
 [target.'cfg(target_os = "windows")'.dependencies]

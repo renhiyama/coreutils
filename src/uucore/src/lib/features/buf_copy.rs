@@ -11,14 +11,14 @@
 
 pub mod common;
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 pub mod linux;
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 pub use linux::*;
 
-#[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+#[cfg(not(any(any(target_os = "linux"), target_os = "android")))]
 pub mod other;
-#[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+#[cfg(not(any(any(target_os = "linux"), target_os = "android")))]
 pub use other::copy_stream;
 
 #[cfg(test)]
@@ -51,7 +51,7 @@ mod tests {
             .unwrap()
     }
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     #[test]
     fn test_copy_exact() {
         let (mut pipe_read, mut pipe_write) = pipes::pipe().unwrap();

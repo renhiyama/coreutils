@@ -35,10 +35,10 @@ fn test_helper(file_name: &str, possible_args: &[&str]) {
 
 #[test]
 fn test_buffer_sizes() {
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     let buffer_sizes = ["0", "50K", "50k", "1M", "100M", "0%", "10%"];
     // TODO Percentage sizes are not yet supported beyond Linux.
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     let buffer_sizes = ["0", "50K", "50k", "1M", "100M"];
     for buffer_size in &buffer_sizes {
         new_ucmd!()
@@ -80,7 +80,7 @@ fn test_invalid_buffer_size() {
         .stderr_only("sort: invalid suffix in --buffer-size argument '100f'\n");
 
     // TODO Percentage sizes are not yet supported beyond Linux.
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     new_ucmd!()
         .arg("-S")
         .arg("0x123%")
@@ -1094,7 +1094,7 @@ fn sort_empty_chunk() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_compress() {
     new_ucmd!()
         .args(&[
@@ -1110,7 +1110,7 @@ fn test_compress() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_compress_merge() {
     new_ucmd!()
         .args(&[
@@ -1196,7 +1196,7 @@ fn test_batch_size_too_large() {
             "--batch-size argument '{large_batch_size}' too large"
         ));
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     new_ucmd!()
         .arg(format!("--batch-size={large_batch_size}"))
         .fails_with_code(2)
@@ -1221,8 +1221,8 @@ fn test_merge_batch_size() {
 
 #[test]
 // TODO(#7542): Re-enable on Android once we figure out why setting limit is broken.
-// #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+// #[cfg(any(any(target_os = "linux"), target_os = "android"))]
+#[cfg(any(target_os = "linux"))]
 fn test_merge_batch_size_with_limit() {
     use rlimit::Resource;
     // Currently need...
@@ -1468,7 +1468,7 @@ fn test_args_check_conflict() {
     new_ucmd!().arg("-c").arg("-C").fails();
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_failed_write_is_reported() {
     new_ucmd!()
@@ -1570,7 +1570,7 @@ fn test_files0_from_empty() {
         .stderr_only("sort: no input from 'file'\n");
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 // Test for GNU tests/sort/sort-files0-from.pl "empty-non-regular"
 fn test_files0_from_empty_non_regular() {
@@ -2744,7 +2744,7 @@ fn test_failed_to_set_locale_debug_message() {
 
     result.stderr_contains("text ordering performed using simple byte comparison");
 
-    #[cfg(all(any(target_os = "linux", target_os = "runixos"), target_env = "gnu"))]
+    #[cfg(all(any(target_os = "linux"), target_env = "gnu"))]
     result.stderr_contains("failed to set locale");
 }
 

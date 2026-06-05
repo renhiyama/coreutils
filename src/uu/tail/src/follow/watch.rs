@@ -15,7 +15,7 @@ use std::path::{Path, PathBuf};
 use std::sync::mpsc::{self, Receiver, channel};
 use uucore::display::Quotable;
 use uucore::error::{UResult, USimpleError, set_exit_code};
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use uucore::signals::ensure_stdout_not_broken;
 use uucore::translate;
 
@@ -37,7 +37,7 @@ impl WatcherRx {
     /// Wrapper for `notify::Watcher::watch` to also add the parent directory of `path` if necessary.
     fn watch_with_parent(&mut self, path: &Path) -> UResult<()> {
         let mut path = path.to_owned();
-        #[cfg(any(target_os = "linux", target_os = "runixos"))]
+        #[cfg(any(target_os = "linux"))]
         if path.is_file() {
             /*
             NOTE: Using the parent directory instead of the file is a workaround.
@@ -261,7 +261,7 @@ impl Observer {
                 match input.kind() {
                     InputKind::Stdin => (),
                     InputKind::File(path) => {
-                        #[cfg(all(unix, not(any(target_os = "linux", target_os = "runixos"))))]
+                        #[cfg(all(unix, not(any(target_os = "linux"))))]
                         if !path.is_file() {
                             continue;
                         }
@@ -612,7 +612,7 @@ pub fn follow(mut observer: Observer, settings: &Settings) -> UResult<()> {
             Err(mpsc::RecvTimeoutError::Timeout) => {
                 timeout_counter += 1;
                 // Check if stdout pipe is still open
-                #[cfg(any(target_os = "linux", target_os = "runixos"))]
+                #[cfg(any(target_os = "linux"))]
                 if let Ok(false) = ensure_stdout_not_broken() {
                     return Ok(());
                 }

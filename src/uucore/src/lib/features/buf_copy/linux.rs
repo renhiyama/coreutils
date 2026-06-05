@@ -120,7 +120,7 @@ where
 
 /// Move exactly `num_bytes` bytes from `read_fd` to `write_fd` using the `read`
 /// and `write` calls.
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 pub(crate) fn copy_exact(
     read_fd: &impl AsFd,
     write_fd: &impl AsFd,

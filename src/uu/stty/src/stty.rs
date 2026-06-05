@@ -22,7 +22,7 @@ use clap::{Arg, ArgAction, ArgMatches, Command};
 use nix::libc::{O_NONBLOCK, TIOCGWINSZ, TIOCSWINSZ, c_ushort};
 
 #[cfg(all(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     not(target_arch = "powerpc"),
     not(target_arch = "powerpc64")
 ))]
@@ -628,16 +628,16 @@ fn print_terminal_size(
     term_size: Option<&TermSize>,
 ) -> nix::Result<()> {
     // GNU linked against glibc 2.42 provides us baudrate 51 which panics cfgetospeed
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     let speed = nix::sys::termios::cfgetospeed(termios);
     #[cfg(all(
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         not(target_arch = "powerpc"),
         not(target_arch = "powerpc64")
     ))]
     ioctl_read_bad!(tcgets2, TCGETS2, termios2);
     #[cfg(all(
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         not(target_arch = "powerpc"),
         not(target_arch = "powerpc64")
     ))]
@@ -647,7 +647,7 @@ fn print_terminal_size(
         t2.c_ospeed
     };
     #[cfg(all(
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         any(target_arch = "powerpc", target_arch = "powerpc64")
     ))]
     let speed = nix::sys::termios::cfgetospeed(termios);
@@ -656,7 +656,7 @@ fn print_terminal_size(
 
     // BSDs and Linux (non-PowerPC) use a u32 for the baud rate, so we can simply print it.
     #[cfg(all(
-        any(any(target_os = "linux", target_os = "runixos"), bsd),
+        any(any(target_os = "linux"), bsd),
         not(target_arch = "powerpc"),
         not(target_arch = "powerpc64")
     ))]
@@ -664,7 +664,7 @@ fn print_terminal_size(
 
     // PowerPC uses BaudRate enum, need to convert to display format
     #[cfg(all(
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         any(target_arch = "powerpc", target_arch = "powerpc64")
     ))]
     {
@@ -679,7 +679,7 @@ fn print_terminal_size(
 
     // Other platforms need to use the baud rate enum, so printing the right value
     // becomes slightly more complicated.
-    #[cfg(not(any(any(target_os = "linux", target_os = "runixos"), bsd)))]
+    #[cfg(not(any(any(target_os = "linux"), bsd)))]
     for (text, baud_rate) in BAUD_RATES {
         if *baud_rate == speed {
             printer.print(&translate!("stty-output-speed", "speed" => (*text)));
@@ -694,7 +694,7 @@ fn print_terminal_size(
         );
     }
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "redox"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "redox"))]
     {
         // For some reason the normal nix Termios struct does not expose the line,
         // so we get the underlying libc::termios struct to get that information.
@@ -1057,12 +1057,12 @@ fn apply_special_setting(
         SpecialSetting::Rows(n) => size.rows = *n,
         SpecialSetting::Cols(n) => size.columns = *n,
         #[cfg_attr(
-            not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")),
+            not(any(any(target_os = "linux"), target_os = "android")),
             expect(unused_variables)
         )]
         SpecialSetting::Line(n) => {
             // nix only defines Termios's `line_discipline` field on these platforms
-            #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+            #[cfg(any(any(target_os = "linux"), target_os = "android"))]
             {
                 _termios.line_discipline = *n;
             }
@@ -1215,7 +1215,7 @@ fn combo_to_flags(combo: &str) -> Vec<ArgOptions<'_>> {
                 (S::VEOF, "^D"),
                 (S::VEOL, ""),
                 (S::VEOL2, ""),
-                #[cfg(any(target_os = "linux", target_os = "runixos"))]
+                #[cfg(any(target_os = "linux"))]
                 (S::VSWTC, ""),
                 (S::VSTART, "^Q"),
                 (S::VSTOP, "^S"),
@@ -1252,7 +1252,7 @@ fn get_sane_control_char(cc_index: S) -> u8 {
         S::VEOL2 => 0,
         S::VMIN => 1,
         S::VTIME => 0,
-        #[cfg(any(target_os = "linux", target_os = "runixos"))]
+        #[cfg(any(target_os = "linux"))]
         S::VSWTC => 0,
         _ => 0,
     }

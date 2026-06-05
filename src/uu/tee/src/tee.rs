@@ -16,7 +16,7 @@ use uucore::translate;
 
 // spell-checker:ignore nopipe
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use uucore::signals::ensure_stdout_not_broken;
 #[cfg(unix)]
 use uucore::signals::{disable_pipe_errors, ignore_interrupts};
@@ -187,7 +187,7 @@ fn tee(options: &Options) -> Result<()> {
         inner: Box::new(stdin()) as Box<dyn Read>,
     };
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     if options.ignore_pipe_errors && !ensure_stdout_not_broken()? && output.writers.len() == 1 {
         return Ok(());
     }

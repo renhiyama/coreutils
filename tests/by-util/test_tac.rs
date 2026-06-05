@@ -3,14 +3,14 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 // spell-checker:ignore axxbxx bxxaxx axxx axxxx xxaxx xxax xxxxa axyz zyax zyxa bbaaa aaabc bcdddd cddddaaabc xyzabc abcxyzabc nbbaaa EISDIR
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use uutests::at_and_ucmd;
 use uutests::new_ucmd;
 use uutests::util::TestScenario;
 use uutests::util_name;
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_tac_non_utf8_paths() {
     use std::os::unix::ffi::OsStringExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -385,7 +385,7 @@ fn test_regex_before() {
         .stdout_is("+---+c+d-e+--++b+-+a+");
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_failed_write_is_reported() {
     new_ucmd!()
@@ -395,7 +395,7 @@ fn test_failed_write_is_reported() {
         .stderr_is("tac: failed to write to stdout: No space left on device\n");
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_stdin_bad_tmpdir_fallback() {
     // When TMPDIR is invalid, tac falls back to reading stdin directly into memory

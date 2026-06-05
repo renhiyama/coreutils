@@ -26,7 +26,7 @@ fn test_uptime() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_write_error_handling() {
     use std::fs::File;
 
@@ -105,7 +105,7 @@ fn test_uptime_with_non_existent_file() {
 #[cfg(not(any(target_os = "openbsd", target_os = "macos")))]
 #[cfg(not(target_env = "musl"))]
 #[cfg_attr(
-    all(target_arch = "aarch64", any(target_os = "linux", target_os = "runixos")),
+    all(target_arch = "aarch64", any(target_os = "linux")),
     ignore = "Issue #7159 - Test not supported on ARM64 Linux"
 )]
 #[allow(clippy::too_many_lines, clippy::items_after_statements)]

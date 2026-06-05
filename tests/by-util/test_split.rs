@@ -6,11 +6,11 @@
 
 use rand::{Rng, SeedableRng, rng};
 use regex::Regex;
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 use rlimit::Resource;
 #[cfg(not(windows))]
 use std::env;
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use std::os::unix::ffi::OsStringExt;
 use std::path::Path;
 use std::{
@@ -1666,8 +1666,8 @@ fn test_round_robin() {
 
 #[test]
 // TODO(#7542): Re-enable on Android once we figure out why rlimit is broken.
-// #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+// #[cfg(any(any(target_os = "linux"), target_os = "android"))]
+#[cfg(any(target_os = "linux"))]
 fn test_round_robin_limited_file_descriptors() {
     new_ucmd!()
         .args(&["-n", "r/40", "onehundredlines.txt"])
@@ -1711,7 +1711,7 @@ fn test_split_invalid_input() {
 /// Test if there are invalid (non UTF-8) in the arguments - unix
 /// clap is expected to fail/panic
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_split_non_utf8_argument_unix() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;
@@ -2006,7 +2006,7 @@ fn test_long_lines() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_split_non_utf8_paths() {
     let (at, mut ucmd) = at_and_ucmd!();
 
@@ -2020,7 +2020,7 @@ fn test_split_non_utf8_paths() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_split_non_utf8_prefix() {
     use std::os::unix::ffi::OsStrExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -2049,7 +2049,7 @@ fn test_split_non_utf8_prefix() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_split_non_utf8_additional_suffix() {
     use std::os::unix::ffi::OsStrExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -2080,7 +2080,7 @@ fn test_split_non_utf8_additional_suffix() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))] // To re-enable on Windows once I work out what goes wrong with it.
+#[cfg(any(target_os = "linux"))] // To re-enable on Windows once I work out what goes wrong with it.
 fn test_split_directory_already_exists() {
     let (at, mut ucmd) = at_and_ucmd!();
 

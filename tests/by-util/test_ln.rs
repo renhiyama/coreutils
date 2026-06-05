@@ -966,7 +966,7 @@ fn test_ln_seen_file() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_ln_non_utf8_paths() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;

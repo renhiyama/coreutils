@@ -663,7 +663,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     fn test_arg_iterate_bad_encoding() {
         use std::os::unix::ffi::OsStringExt;
         let invalid = OsString::from_vec(vec![b'\x80', b'\x81']);

@@ -386,7 +386,7 @@ fn test_file() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_file_with_non_utf8_name() {
     use std::os::unix::ffi::OsStringExt;
     let (at, mut ucmd) = at_and_ucmd!();

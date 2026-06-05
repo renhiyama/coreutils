@@ -469,7 +469,7 @@ fn test_fifo_error_reference_and_size() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_truncate_non_utf8_paths() {
     use std::os::unix::ffi::OsStrExt;
     let ts = TestScenario::new(util_name!());

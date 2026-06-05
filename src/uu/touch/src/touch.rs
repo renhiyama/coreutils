@@ -33,7 +33,7 @@ use std::path::{Path, PathBuf};
 use std::time::SystemTime;
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError};
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use uucore::libc;
 use uucore::parser::shortcut_value_parser::ShortcutValueParser;
 use uucore::translate;
@@ -387,7 +387,7 @@ pub fn touch(files: &[InputFile], opts: &Options) -> Result<(), TouchError> {
         }
         Source::Now => {
             let now: FileTime;
-            #[cfg(any(target_os = "linux", target_os = "runixos"))]
+            #[cfg(any(target_os = "linux"))]
             {
                 if opts.date.is_none() {
                     now = FileTime::from_unix_time(0, libc::UTIME_NOW as u32);
@@ -395,7 +395,7 @@ pub fn touch(files: &[InputFile], opts: &Options) -> Result<(), TouchError> {
                     now = timestamp_to_filetime(Timestamp::now());
                 }
             }
-            #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+            #[cfg(not(any(target_os = "linux")))]
             {
                 now = timestamp_to_filetime(Timestamp::now());
             }

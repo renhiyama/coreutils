@@ -75,7 +75,7 @@ fn test_long_input() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 fn test_piped_to_dev_full() {
     use std::fs::OpenOptions;
 

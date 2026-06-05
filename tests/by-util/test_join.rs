@@ -4,7 +4,7 @@
 // file that was distributed with this source code.
 // spell-checker:ignore (words) autoformat nocheck
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 use std::fs::OpenOptions;
 #[cfg(unix)]
 use std::{ffi::OsStr, os::unix::ffi::OsStrExt};
@@ -523,7 +523,7 @@ fn null_line_endings() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 fn test_full() {
     let dev_full = OpenOptions::new().write(true).open("/dev/full").unwrap();
     new_ucmd!()
@@ -535,7 +535,7 @@ fn test_full() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_join_non_utf8_paths() {
     use std::fs::File;
     use std::io::Write;

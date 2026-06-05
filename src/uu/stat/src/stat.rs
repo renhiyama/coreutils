@@ -1033,9 +1033,9 @@ impl Stater {
         file: &OsString,
         file_type: FileType,
         from_user: bool,
-        #[cfg(all(feature = "selinux", any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+        #[cfg(all(feature = "selinux", any(any(target_os = "linux"), target_os = "android")))]
         follow_symbolic_links: bool,
-        #[cfg(not(all(feature = "selinux", any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))))]
+        #[cfg(not(all(feature = "selinux", any(any(target_os = "linux"), target_os = "android"))))]
         _: bool,
     ) -> Result<(), i32> {
         match *t {
@@ -1064,7 +1064,7 @@ impl Stater {
                     'C' => {
                         #[cfg(all(
                             feature = "selinux",
-                            any(any(target_os = "linux", target_os = "runixos"), target_os = "android")
+                            any(any(target_os = "linux"), target_os = "android")
                         ))]
                         {
                             if uucore::selinux::is_selinux_enabled() {
@@ -1083,7 +1083,7 @@ impl Stater {
                         }
                         #[cfg(not(all(
                             feature = "selinux",
-                            any(any(target_os = "linux", target_os = "runixos"), target_os = "android")
+                            any(any(target_os = "linux"), target_os = "android")
                         )))]
                         {
                             OutputType::Str(translate!("stat-selinux-unsupported-os"))

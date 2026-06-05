@@ -741,15 +741,10 @@ large_types_passed_by_value = "allow"
 [workspace.metadata.cargo-shear]
 ignored = ["clap", "fluent", "libstdbuf"]
 
+
 [patch.crates-io]
-libc = { git = "https://github.com/renhiyama/libc", branch = "libc-0.2" }
-nix = { git = "https://github.com/renhiyama/nix", branch = "runixos-0.30" }
-errno = { git = "https://github.com/renhiyama/rust-errno", branch = "runixos" }
-rustix = { git = "https://github.com/renhiyama/rustix" }
-mio = { git = "https://github.com/renhiyama/mio" }
-socket2 = { git = "https://github.com/renhiyama/socket2" }
-procfs = { git = "https://github.com/renhiyama/procfs", branch = "runixos" }
-getrandom_02 = { package = "getrandom", path = "patches/getrandom-v02" }
-getrandom_03 = { package = "getrandom", path = "patches/getrandom-v03" }
-getrandom_04 = { package = "getrandom", path = "patches/getrandom-v04" }
-nix_031 = { package = "nix", path = "patches/nix-v031" }
+# cc string-parses the target triple and rejects the unknown runixos environment
+# in x86_64-rovelstars-linux-runixos; the fork recognizes it. Required because
+# some build scripts compile C/asm for the target (selinux-sys, onig, ring,
+# tree-sitter, etc).
+cc = { git = "https://github.com/renhiyama/cc-rs", branch = "runixos" }

@@ -1396,7 +1396,7 @@ fn test_date_locale_hour_c_locale() {
 
 #[test]
 #[cfg(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_vendor = "apple",
     target_os = "freebsd",
     target_os = "netbsd",
@@ -1438,7 +1438,7 @@ fn test_date_explicit_format_overrides_locale() {
 // Comprehensive locale formatting tests to verify actual locale format strings are used
 #[test]
 #[cfg(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_vendor = "apple",
     target_os = "freebsd",
     target_os = "netbsd",
@@ -1574,7 +1574,7 @@ fn test_date_locale_format_not_hardcoded() {
 
 #[test]
 #[cfg(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_vendor = "apple",
     target_os = "freebsd",
     target_os = "netbsd",
@@ -1620,7 +1620,7 @@ fn test_date_locale_en_us_vs_c_difference() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_vendor = "apple"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android", target_vendor = "apple"))]
 fn test_date_locale_fr_french() {
     // Test French locale (fr_FR.UTF-8) behavior
     // French typically uses 24-hour format and may have localized day/month names
@@ -1678,7 +1678,7 @@ fn test_date_posix_format_specifiers() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_vendor = "apple"))]
+#[cfg(any(any(target_os = "linux"), target_vendor = "apple"))]
 fn test_date_format_b_french_locale() {
     // Test both %B and %b formats with French locale using a loop
     // This test expects localized month names when i18n support is available
@@ -1713,7 +1713,7 @@ fn test_date_format_b_french_locale() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_vendor = "apple"))]
+#[cfg(any(any(target_os = "linux"), target_vendor = "apple"))]
 fn test_date_format_a_french_locale() {
     // Test both %A and %a formats with French locale using a loop
     // This test expects localized day names when i18n support is available
@@ -1748,7 +1748,7 @@ fn test_date_format_a_french_locale() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_vendor = "apple"))]
+#[cfg(any(any(target_os = "linux"), target_vendor = "apple"))]
 fn test_date_french_full_sentence() {
     let result = new_ucmd!()
         .env("LANG", "fr_FR.UTF-8")
@@ -1774,7 +1774,7 @@ fn test_date_french_full_sentence() {
 /// This is a regression test for locale-aware date formatting
 #[test]
 #[ignore = "https://bugs.launchpad.net/ubuntu/+source/rust-coreutils/+bug/2137410"]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_vendor = "apple"))]
+#[cfg(any(any(target_os = "linux"), target_vendor = "apple"))]
 fn test_date_format_x_locale_aware() {
     // With C locale, %x should output MM/DD/YY (US format)
     new_ucmd!()
@@ -2228,7 +2228,7 @@ fn test_percent_percent_not_replaced() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_date_write_error_dev_full() {
     use std::fs::OpenOptions;
     let dev_full = OpenOptions::new().write(true).open("/dev/full").unwrap();

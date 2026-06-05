@@ -233,7 +233,7 @@ fn test_chmod_ugoa() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "macos", target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "macos", target_os = "android"))]
 #[allow(clippy::cast_lossless)]
 fn test_chmod_umask_expected() {
     // Get the actual system umask using libc
@@ -252,11 +252,11 @@ fn test_chmod_umask_expected() {
 }
 
 fn get_expected_symlink_permissions() -> u32 {
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     {
         0o120_777
     }
-    #[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+    #[cfg(not(any(any(target_os = "linux"), target_os = "android")))]
     {
         0o120_755
     }
@@ -1279,7 +1279,7 @@ fn test_chmod_recursive_symlink_combinations() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_chmod_non_utf8_paths() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;
@@ -1363,7 +1363,7 @@ fn test_chmod_non_utf8_paths() {
     );
 }
 
-#[cfg(all(any(target_os = "linux", target_os = "runixos"), feature = "chmod"))]
+#[cfg(all(any(target_os = "linux"), feature = "chmod"))]
 #[test]
 #[ignore = "covered by util/check-safe-traversal.sh"]
 fn test_chmod_recursive_uses_dirfd_for_subdirs() {

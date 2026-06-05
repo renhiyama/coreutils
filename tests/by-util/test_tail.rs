@@ -2241,10 +2241,10 @@ fn test_follow_name_move_create1() {
     let source = FOLLOW_NAME_TXT;
     let backup = "backup";
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     let expected_stdout = at.read(FOLLOW_NAME_EXP);
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     let expected_stderr = format!(
         "{}: {source}: No such file or directory\n{0}: '{source}' has appeared;  following new file\n",
         ts.util_name,
@@ -2252,10 +2252,10 @@ fn test_follow_name_move_create1() {
 
     // NOTE: We are less strict if not on Linux (inotify backend).
 
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     let expected_stdout = at.read(FOLLOW_NAME_SHORT_EXP);
 
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     let expected_stderr = format!("{}: {source}: No such file or directory\n", ts.util_name);
 
     let delay = 500;
@@ -4097,7 +4097,7 @@ fn test_args_when_settings_check_warnings_then_shows_warnings() {
 
 /// TODO: Write similar tests for windows
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_args_when_settings_check_warnings_follow_indefinitely_then_warning() {
     let scene = TestScenario::new(util_name!());
 
@@ -5071,7 +5071,7 @@ fn test_child_when_run_with_stderr_to_stdout() {
         .stdout_only(expected_stdout);
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_failed_write_is_reported() {
     new_ucmd!()
@@ -5082,7 +5082,7 @@ fn test_failed_write_is_reported() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_dev_zero() {
     new_ucmd!()
         .args(&["-c", "1", "/dev/zero"])
@@ -5116,7 +5116,7 @@ fn test_tail_bytes_exceeds_file_size() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_follow_pipe_f() {
     new_ucmd!()
         .args(&["-f", "-c3", "-s.1", "--max-unchanged-stats=1"])
@@ -5126,7 +5126,7 @@ fn test_follow_pipe_f() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_follow_stdout_pipe_close() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.write("f", "line1\nline2\n");
@@ -5161,7 +5161,7 @@ fn test_debug_flag_with_polling() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_debug_flag_with_inotify() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -5178,7 +5178,7 @@ fn test_debug_flag_with_inotify() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_follow_dangling_symlink() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.symlink_file("target", "link");
@@ -5192,7 +5192,7 @@ fn test_follow_dangling_symlink() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_follow_symlink_target_change() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.write("t1", "A\n");

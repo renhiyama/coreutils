@@ -6,11 +6,11 @@
 /* Last synced with: sync (GNU coreutils) 8.13 */
 
 use clap::{Arg, ArgAction, Command};
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 use nix::errno::Errno;
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 use nix::fcntl::{OFlag, open};
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 use nix::sys::stat::Mode;
 use std::path::Path;
 use uucore::display::Quotable;
@@ -28,20 +28,20 @@ static ARG_FILES: &str = "files";
 
 #[cfg(unix)]
 mod platform {
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     use nix::fcntl::{FcntlArg, OFlag, fcntl};
     use nix::unistd::sync;
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     use nix::unistd::{fdatasync, syncfs};
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     use std::fs::{File, OpenOptions};
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     use std::os::unix::fs::OpenOptionsExt;
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     use uucore::display::Quotable;
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     use uucore::error::FromIo;
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     use uucore::translate;
 
     use uucore::error::UResult;
@@ -58,7 +58,7 @@ mod platform {
     /// Opens a file and resets its O_NONBLOCK flag to match GNU behavior.
     /// Returns the opened file or an error if opening fails.
     /// Logs a warning if fcntl fails but doesn't abort the operation.
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     fn open_and_reset_nonblock(path: &str) -> UResult<File> {
         let f = OpenOptions::new()
             .read(true)
@@ -76,7 +76,7 @@ mod platform {
         Ok(f)
     }
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     pub fn do_syncfs(files: Vec<String>) -> UResult<()> {
         for path in files {
             let f = open_and_reset_nonblock(&path)?;
@@ -87,7 +87,7 @@ mod platform {
         Ok(())
     }
 
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     pub fn do_fdatasync(files: Vec<String>) -> UResult<()> {
         for path in files {
             let f = open_and_reset_nonblock(&path)?;
@@ -229,7 +229,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
 
     for f in &files {
         // Use the Nix open to be able to set the NONBLOCK flags for fifo files
-        #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+        #[cfg(any(any(target_os = "linux"), target_os = "android"))]
         {
             let path = Path::new(&f);
             if let Err(e) = open(path, OFlag::O_NONBLOCK, Mode::empty()) {
@@ -242,7 +242,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
                 }
             }
         }
-        #[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+        #[cfg(not(any(any(target_os = "linux"), target_os = "android")))]
         {
             if !Path::new(&f).exists() {
                 show_error!(
@@ -260,10 +260,10 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
 
     #[allow(clippy::if_same_then_else)]
     if matches.get_flag(options::FILE_SYSTEM) {
-        #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "windows"))]
+        #[cfg(any(any(target_os = "linux"), target_os = "android", target_os = "windows"))]
         syncfs(files)?;
     } else if matches.get_flag(options::DATA) {
-        #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+        #[cfg(any(any(target_os = "linux"), target_os = "android"))]
         fdatasync(files)?;
     } else {
         sync()?;
@@ -305,12 +305,12 @@ fn sync() -> UResult<()> {
     platform::do_sync()
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "windows"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android", target_os = "windows"))]
 fn syncfs(files: Vec<String>) -> UResult<()> {
     platform::do_syncfs(files)
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn fdatasync(files: Vec<String>) -> UResult<()> {
     platform::do_fdatasync(files)
 }

@@ -2,7 +2,7 @@
 //
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use std::os::unix::ffi::OsStringExt;
 use uutests::new_ucmd;
 
@@ -168,7 +168,7 @@ fn test_posix_all() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_pathchk_non_utf8_paths() {
     let filename = std::ffi::OsString::from_vec(vec![0xFF, 0xFE]);
     new_ucmd!().arg(&filename).succeeds();

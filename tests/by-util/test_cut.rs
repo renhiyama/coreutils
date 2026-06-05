@@ -587,7 +587,7 @@ fn test_emoji_delim() {
         .stdout_only("🌹\n");
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_failed_write_is_reported() {
     new_ucmd!()
@@ -600,7 +600,7 @@ fn test_failed_write_is_reported() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_cut_non_utf8_paths() {
     use std::fs::File;
     use std::io::Write;

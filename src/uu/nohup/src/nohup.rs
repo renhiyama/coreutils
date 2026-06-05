@@ -182,7 +182,7 @@ unsafe extern "C" {
 }
 
 #[cfg(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_os = "android",
     target_os = "freebsd",
     target_os = "openbsd",

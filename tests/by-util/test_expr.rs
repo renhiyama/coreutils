@@ -1507,7 +1507,7 @@ mod locale_aware {
 }
 
 /// This module reimplements the expr-multibyte.pl test
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 mod gnu_expr_multibyte {
     use uutests::new_ucmd;
 

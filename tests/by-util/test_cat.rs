@@ -4,7 +4,7 @@
 // file that was distributed with this source code.
 // spell-checker:ignore NOFILE nonewline cmdline
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 use rlimit::Resource;
 #[cfg(unix)]
 use std::fs::File;
@@ -69,7 +69,7 @@ fn test_no_options() {
 }
 
 #[test]
-#[cfg(any(target_vendor = "apple", any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(target_vendor = "apple", any(target_os = "linux"), target_os = "android"))]
 fn test_no_options_big_input() {
     for n in [
         0,
@@ -128,8 +128,8 @@ fn test_fifo_symlink() {
 
 #[test]
 // TODO(#7542): Re-enable on Android once we figure out why setting limit is broken.
-// #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+// #[cfg(any(any(target_os = "linux"), target_os = "android"))]
+#[cfg(any(target_os = "linux"))]
 fn test_closes_file_descriptors() {
     // Each file creates a pipe, which has two file descriptors.
     // If they are not closed then five is certainly too many.
@@ -207,7 +207,7 @@ fn test_piped_to_dev_null() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 fn test_piped_to_dev_full() {
     for append in [true, false] {
         let s = TestScenario::new(util_name!());
@@ -524,10 +524,10 @@ fn test_squeeze_blank_before_numbering() {
 #[test]
 #[cfg(unix)]
 fn test_dev_random() {
-    #[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+    #[cfg(any(any(target_os = "linux"), target_os = "android"))]
     const DEV_RANDOM: &str = "/dev/urandom";
 
-    #[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+    #[cfg(not(any(any(target_os = "linux"), target_os = "android")))]
     const DEV_RANDOM: &str = "/dev/random";
 
     let mut proc = new_ucmd!()
@@ -552,7 +552,7 @@ fn test_dev_random() {
 /// Reading from /dev/full should return an infinite amount of zero bytes.
 /// Wikipedia says there is support on Linux, FreeBSD, and `NetBSD`.
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 fn test_dev_full() {
     let mut proc = new_ucmd!()
         .set_stdout(Stdio::piped())
@@ -567,7 +567,7 @@ fn test_dev_full() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 fn test_dev_full_show_all() {
     let buf_len = 2048;
     let mut proc = new_ucmd!()
@@ -589,7 +589,7 @@ fn test_dev_full_show_all() {
 // fallback inside `write_fast`, the other splice succeeds, in effect
 // without additional flush output gets reversed.
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_write_fast_fallthrough_uses_flush() {
     const PROC_INIT_CMDLINE: &str = "/proc/1/cmdline";
     let cmdline = read_to_string(PROC_INIT_CMDLINE).unwrap();
@@ -754,7 +754,7 @@ fn test_write_fast_read_error() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_cat_non_utf8_paths() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;
@@ -778,7 +778,7 @@ fn test_cat_non_utf8_paths() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_appending_same_input_output() {
     let (at, mut ucmd) = at_and_ucmd!();
 
@@ -849,7 +849,7 @@ fn test_child_when_pipe_in() {
 /// - Test SHOULD PASS (cat exits gracefully with error code 1)
 // Regression test for issue #9769: graceful error handling when writing to /dev/full
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_write_error_handling() {
     use std::fs::File;
 
@@ -865,7 +865,7 @@ fn test_write_error_handling() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_version_help_dev_full() {
     use std::fs::OpenOptions;
 

@@ -1568,7 +1568,7 @@ fn test_octal_escape_ambiguous_followed_by_non_utf8() {
         .stderr_contains("warning: invalid utf8 sequence");
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_failed_write_is_reported() {
     new_ucmd!()

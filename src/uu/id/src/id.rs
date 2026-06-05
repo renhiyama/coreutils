@@ -559,7 +559,7 @@ fn pline(possible_uid: Option<uid_t>) -> io::Result<()> {
 }
 
 #[cfg(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_os = "android",
     target_os = "openbsd",
     target_os = "cygwin"
@@ -583,7 +583,7 @@ fn pline(possible_uid: Option<uid_t>) -> io::Result<()> {
 }
 
 #[cfg(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_os = "android",
     target_os = "openbsd",
     target_os = "cygwin"
@@ -594,7 +594,7 @@ fn auditid() -> io::Result<()> {
 }
 
 #[cfg(not(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_os = "android",
     target_os = "openbsd",
     target_os = "cygwin"
@@ -728,7 +728,7 @@ fn id_print(state: &State, groups: &[u32]) -> io::Result<()> {
     Ok(())
 }
 
-#[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "openbsd")))]
+#[cfg(not(any(any(target_os = "linux"), target_os = "android", target_os = "openbsd")))]
 mod audit {
     use super::libc::{c_int, c_uint, dev_t, pid_t, uid_t};
 

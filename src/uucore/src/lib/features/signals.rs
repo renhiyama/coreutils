@@ -12,7 +12,7 @@
 
 #[cfg(unix)]
 use nix::errno::Errno;
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 use nix::libc;
 #[cfg(unix)]
 use nix::sys::signal::{
@@ -37,7 +37,7 @@ Linux Programmer's Manual
 */
 
 /// The list of all signals.
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android", target_os = "redox"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android", target_os = "redox"))]
 pub static ALL_SIGNALS: [&str; 32] = [
     "EXIT", "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE", "KILL", "USR1", "SEGV",
     "USR2", "PIPE", "ALRM", "TERM", "STKFLT", "CHLD", "CONT", "STOP", "TSTP", "TTIN", "TTOU",
@@ -413,7 +413,7 @@ pub fn signal_name_by_value(signal_value: usize) -> Option<&'static str> {
     ALL_SIGNALS.get(signal_value).copied()
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn realtime_signal_bounds() -> Option<(usize, usize)> {
     let rtmin = libc::SIGRTMIN();
     let rtmax = libc::SIGRTMAX();
@@ -421,7 +421,7 @@ fn realtime_signal_bounds() -> Option<(usize, usize)> {
     (0 < rtmin && rtmin <= rtmax).then_some((rtmin as usize, rtmax as usize))
 }
 
-#[cfg(not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+#[cfg(not(any(any(target_os = "linux"), target_os = "android")))]
 fn realtime_signal_bounds() -> Option<(usize, usize)> {
     None
 }
@@ -628,7 +628,7 @@ pub const fn sigpipe_was_ignored() -> bool {
     false
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 pub fn ensure_stdout_not_broken() -> std::io::Result<bool> {
     use nix::{
         poll::{PollFd, PollFlags, PollTimeout, poll},
@@ -721,14 +721,14 @@ fn list_signal_numbers_follow_upper_bound() {
     );
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn linux_realtime_signal_upper_bound_includes_rtmax() {
     let (_, rtmax) = realtime_signal_bounds().unwrap();
     assert!(signal_number_upper_bound() >= rtmax);
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn linux_realtime_signal_names_are_listed() {
     let (rtmin, rtmax) = realtime_signal_bounds().unwrap();
@@ -737,7 +737,7 @@ fn linux_realtime_signal_names_are_listed() {
     assert_eq!(signal_list_name_by_value(rtmax), Some("RTMAX".to_string()));
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn linux_realtime_signal_names_resolve_to_runtime_values() {
     let (rtmin, rtmax) = realtime_signal_bounds().unwrap();
@@ -748,7 +748,7 @@ fn linux_realtime_signal_names_resolve_to_runtime_values() {
     assert_eq!(signal_list_value_by_name_or_number("SIGRTMAX"), Some(rtmax));
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn linux_unnamed_signal_numbers_are_valid_for_lists() {
     assert_eq!(signal_list_value_by_name_or_number("32"), Some(32));

@@ -1727,15 +1727,15 @@ fn index_legacy_warnings(processed_args: &[OsString], legacy_warnings: &mut [Leg
     }
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 const LINUX_BATCH_DIVISOR: usize = 4;
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 const LINUX_BATCH_MIN: usize = 32;
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 const LINUX_BATCH_MAX: usize = 256;
 
 fn default_merge_batch_size() -> usize {
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     {
         // Adjust merge batch size dynamically based on available file descriptors.
         match fd_soft_limit() {
@@ -1747,7 +1747,7 @@ fn default_merge_batch_size() -> usize {
         }
     }
 
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     {
         64
     }
@@ -2163,7 +2163,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
                         "arg" => n_merge.quote()
                     );
 
-                    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+                    #[cfg(any(target_os = "linux"))]
                     {
                         show_error!("{batch_too_large}");
 
@@ -2180,7 +2180,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
                             }
                         )
                     }
-                    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+                    #[cfg(not(any(target_os = "linux")))]
                     {
                         batch_too_large
                     }

@@ -382,7 +382,7 @@ fn fails_on_invalid_number() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 fn short_circuit_write_error() {
     use std::fs::OpenOptions;
 

@@ -13,7 +13,7 @@ macro_rules! cfg_langinfo {
     ($($item:item)*) => {
         $(
             #[cfg(any(
-                any(target_os = "linux", target_os = "runixos"),
+                any(target_os = "linux"),
                 target_vendor = "apple",
                 target_os = "freebsd",
                 target_os = "netbsd",
@@ -35,9 +35,9 @@ cfg_langinfo! {
 
     /// glibc's `_DATE_FMT` has been stable for the last 12 years
     /// being added upstream to libc TODO: update to libc
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     const DATE_FMT: libc::nl_item = 0x2006c;
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     const DATE_FMT: libc::nl_item = libc::D_T_FMT;
 }
 
@@ -119,7 +119,7 @@ cfg_langinfo! {
 
 /// On platforms without nl_langinfo support, use 24-hour format by default
 #[cfg(not(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_vendor = "apple",
     target_os = "freebsd",
     target_os = "netbsd",

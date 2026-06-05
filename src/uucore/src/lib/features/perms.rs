@@ -18,10 +18,10 @@ use libc::{gid_t, uid_t};
 use options::traverse;
 use std::ffi::OsString;
 
-#[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+#[cfg(not(any(target_os = "linux")))]
 use walkdir::WalkDir;
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use crate::features::safe_traversal::{DirFd, SymlinkBehavior};
 
 use std::ffi::CString;
@@ -308,7 +308,7 @@ impl ChownExecutor {
 
         let ret = if self.matched(meta.uid(), meta.gid()) {
             // Use safe syscalls for root directory to prevent TOCTOU attacks on Linux
-            #[cfg(any(target_os = "linux", target_os = "runixos"))]
+            #[cfg(any(target_os = "linux"))]
             let chown_result = if path.is_dir() {
                 // For directories on Linux, use safe traversal from the start
                 match DirFd::open(path, SymlinkBehavior::Follow) {
@@ -333,7 +333,7 @@ impl ChownExecutor {
                 )
             };
 
-            #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+            #[cfg(not(any(target_os = "linux")))]
             let chown_result = wrap_chown(
                 path,
                 &meta,
@@ -367,11 +367,11 @@ impl ChownExecutor {
         };
 
         if self.recursive {
-            #[cfg(any(target_os = "linux", target_os = "runixos"))]
+            #[cfg(any(target_os = "linux"))]
             {
                 ret | self.safe_dive_into(&root)
             }
-            #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+            #[cfg(not(any(target_os = "linux")))]
             {
                 ret | self.dive_into(&root)
             }
@@ -380,7 +380,7 @@ impl ChownExecutor {
         }
     }
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     fn safe_chown_dir(&self, dir_fd: &DirFd, path: &Path, meta: &Metadata) -> Result<(), String> {
         let dest_uid = self.dest_uid.unwrap_or_else(|| meta.uid());
         let dest_gid = self.dest_gid.unwrap_or_else(|| meta.gid());
@@ -428,7 +428,7 @@ impl ChownExecutor {
         Ok(())
     }
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     fn safe_dive_into<P: AsRef<Path>>(&self, root: P) -> i32 {
         let root = root.as_ref();
 
@@ -454,7 +454,7 @@ impl ChownExecutor {
         ret
     }
 
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     fn safe_traverse_dir(&self, dir_fd: &DirFd, dir_path: &Path, ret: &mut i32) {
         // Read directory entries
         let entries = match dir_fd.read_dir() {
@@ -556,7 +556,7 @@ impl ChownExecutor {
         }
     }
 
-    #[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(not(any(target_os = "linux")))]
     #[allow(clippy::cognitive_complexity)]
     fn dive_into<P: AsRef<Path>>(&self, root: P) -> i32 {
         let root = root.as_ref();
@@ -693,7 +693,7 @@ impl ChownExecutor {
     }
 
     /// Try to open directory with error reporting
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     fn try_open_dir(&self, path: &Path) -> Option<DirFd> {
         DirFd::open(path, SymlinkBehavior::Follow)
             .map_err(|e| {
@@ -706,7 +706,7 @@ impl ChownExecutor {
 
     /// Report ownership change with proper verbose output
     /// Returns 0 on success
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     fn report_ownership_change_success(
         &self,
         path: &Path,

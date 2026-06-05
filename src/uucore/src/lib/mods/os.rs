@@ -9,7 +9,7 @@
 
 /// Test if the program is running under WSL version 1
 pub fn is_wsl_1() -> bool {
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     {
         if is_wsl_2() {
             return false;
@@ -26,7 +26,7 @@ pub fn is_wsl_1() -> bool {
 
 /// Test if the program is running under WSL version 2
 pub fn is_wsl_2() -> bool {
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     {
         if let Ok(b) = std::fs::read("/proc/sys/kernel/osrelease") {
             if let Ok(s) = std::str::from_utf8(&b) {

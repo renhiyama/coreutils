@@ -837,7 +837,7 @@ fn test_all_but_last_lines() {
         .stdout_is_fixture("lorem_ipsum_backwards_15_lines.expected");
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "freebsd", target_os = "netbsd"))]
+#[cfg(any(any(target_os = "linux"), target_os = "freebsd", target_os = "netbsd"))]
 #[test]
 fn test_write_to_dev_full() {
     use std::fs::OpenOptions;
@@ -860,7 +860,7 @@ fn test_write_to_dev_full() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_head_non_utf8_paths() {
     use std::ffi::OsStr;
     use std::os::unix::ffi::OsStrExt;

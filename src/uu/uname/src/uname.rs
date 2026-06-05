@@ -83,7 +83,7 @@ impl UNameOutput {
         let machine = (opts.machine || opts.all).then(|| uname.machine().to_owned());
 
         let os = (opts.os || opts.all).then(|| {
-            if cfg!(target_os = "runixos") {
+            if cfg!(target_vendor = "rovelstars") {
                 "RunixOS".into()
             } else {
                 uname.osname().to_owned()

@@ -3,12 +3,12 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 use uutests::new_ucmd;
-#[cfg(any(target_vendor = "apple", any(target_os = "linux", target_os = "runixos")))]
+#[cfg(any(target_vendor = "apple", any(target_os = "linux")))]
 use uutests::{util::TestScenario, util_name};
 
 #[ignore = "does not work as same as users > /dev/full"]
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_full_panic() {
     let full = std::fs::OpenOptions::new()
         .write(true)
@@ -32,10 +32,10 @@ fn test_users_no_arg() {
 }
 
 #[test]
-#[cfg(any(target_vendor = "apple", any(target_os = "linux", target_os = "runixos")))]
+#[cfg(any(target_vendor = "apple", any(target_os = "linux")))]
 #[ignore = "issue #3219"]
 fn test_users_check_name() {
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     let util_name = util_name!();
     #[cfg(target_vendor = "apple")]
     let util_name = &format!("g{}", util_name!());

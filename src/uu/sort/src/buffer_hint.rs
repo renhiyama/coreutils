@@ -53,7 +53,7 @@ fn file_size_hint(files: &[OsString]) -> Option<usize> {
 }
 
 fn available_memory_hint() -> Option<usize> {
-    #[cfg(any(target_os = "linux", target_os = "runixos"))]
+    #[cfg(any(target_os = "linux"))]
     if let Some(bytes) = uucore::parser::parse_size::available_memory_bytes() {
         return Some(clamp_hint(bytes / 4));
     }
@@ -87,7 +87,7 @@ fn physical_memory_bytes() -> Option<u128> {
     #[cfg(all(
         target_family = "unix",
         not(target_os = "redox"),
-        any(any(target_os = "linux", target_os = "runixos"), target_os = "android")
+        any(any(target_os = "linux"), target_os = "android")
     ))]
     {
         physical_memory_bytes_unix()
@@ -96,7 +96,7 @@ fn physical_memory_bytes() -> Option<u128> {
     #[cfg(any(
         not(target_family = "unix"),
         target_os = "redox",
-        not(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))
+        not(any(any(target_os = "linux"), target_os = "android"))
     ))]
     {
         // No portable or safe API is available here to detect total physical memory.
@@ -107,7 +107,7 @@ fn physical_memory_bytes() -> Option<u128> {
 #[cfg(all(
     target_family = "unix",
     not(target_os = "redox"),
-    any(any(target_os = "linux", target_os = "runixos"), target_os = "android")
+    any(any(target_os = "linux"), target_os = "android")
 ))]
 fn physical_memory_bytes_unix() -> Option<u128> {
     use nix::unistd::{SysconfVar, sysconf};

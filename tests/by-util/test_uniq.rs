@@ -1193,7 +1193,7 @@ fn test_c_locale_counts_bytes() {
         .stdout_is("가나다라마\n");
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 #[test]
 fn test_failed_write_is_reported() {
     new_ucmd!()

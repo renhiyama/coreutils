@@ -56,7 +56,7 @@ macro_rules! assert_fixture_exists {
     }};
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 macro_rules! assert_fixture_not_exists {
     ($fname:expr) => {{
         let fpath = PathBuf::from(format!("./fixtures/dd/{}", $fname));
@@ -275,7 +275,7 @@ fn test_final_stats_unspec() {
         .stderr_contains("0.0 B/s");
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_excl_causes_failure_when_present() {
     let fname = "this-file-exists-excl.txt";
@@ -286,7 +286,7 @@ fn test_excl_causes_failure_when_present() {
         .fails();
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_noatime_does_not_update_infile_atime() {
     // NOTE: Not all environments support tracking access time. If this
@@ -306,7 +306,7 @@ fn test_noatime_does_not_update_infile_atime() {
     assert_eq!(pre_atime, post_atime);
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_noatime_does_not_update_ofile_atime() {
     // NOTE: Not all environments support tracking access time. If this
@@ -326,7 +326,7 @@ fn test_noatime_does_not_update_ofile_atime() {
     assert_eq!(pre_atime, post_atime);
 }
 
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 #[test]
 fn test_nocreat_causes_failure_when_outfile_not_present() {
     let fname = "this-file-does-not-exist.txt";
@@ -1552,7 +1552,7 @@ fn test_multiple_processes_reading_stdin() {
 
 /// Test that discarding system file cache fails for stdin.
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_nocache_stdin_error() {
     #[cfg(not(target_env = "musl"))]
     let detail = "Illegal seek";
@@ -1575,7 +1575,7 @@ fn test_empty_count_number() {
 
 /// Test for discarding system file cache.
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_nocache_file() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.write_bytes("f", b"a".repeat(1 << 20).as_slice());
@@ -1726,7 +1726,7 @@ fn test_reading_partial_blocks_from_fifo_unbuffered() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_iflag_directory_fails_when_file_is_passed_via_std_in() {
     let ts = TestScenario::new(util_name!());
     let at = &ts.fixtures;
@@ -1740,7 +1740,7 @@ fn test_iflag_directory_fails_when_file_is_passed_via_std_in() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_iflag_directory_passes_when_dir_is_redirected() {
     new_ucmd!()
         .args(&["iflag=directory", "count=0"])
@@ -1749,7 +1749,7 @@ fn test_iflag_directory_passes_when_dir_is_redirected() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_iflag_directory_fails_when_file_is_piped_via_std_in() {
     new_ucmd!()
         .arg("iflag=directory")
@@ -1838,7 +1838,7 @@ fn test_no_dropped_writes() {
 }
 
 #[test]
-#[cfg(any(any(target_os = "linux", target_os = "runixos"), target_os = "android"))]
+#[cfg(any(any(target_os = "linux"), target_os = "android"))]
 fn test_oflag_direct_partial_block() {
     // Test for issue #9003: dd should handle partial blocks with oflag=direct
     // This reproduces the scenario where writing a partial block with O_DIRECT fails
@@ -1898,7 +1898,7 @@ fn test_skip_overflow() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_nocache_eof() {
     let (at, mut ucmd) = at_and_ucmd!();
     at.write_bytes("in.f", &vec![0u8; 1_234_567]);
@@ -1914,7 +1914,7 @@ fn test_nocache_eof() {
 }
 
 #[test]
-#[cfg(all(any(target_os = "linux", target_os = "runixos"), feature = "printf"))]
+#[cfg(all(any(target_os = "linux"), feature = "printf"))]
 fn test_nocache_eof_fadvise_zero_length() {
     use std::process::Command;
     let (at, _ucmd) = at_and_ucmd!();

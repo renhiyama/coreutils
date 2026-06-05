@@ -10,7 +10,7 @@
 //! [`gen_prog_updater`] function can be used to implement a progress
 //! updater that runs in its own thread.
 use std::io::Write;
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::time::Duration;
@@ -421,7 +421,7 @@ pub(crate) enum StatusLevel {
 /// This function returns a closure that receives [`ProgUpdate`]
 /// instances sent through `rx`. When a [`ProgUpdate`] instance is
 /// received, the transfer statistics are re-printed to stderr.
-#[cfg(not(any(target_os = "linux", target_os = "runixos")))]
+#[cfg(not(any(target_os = "linux")))]
 pub(crate) fn gen_prog_updater(
     rx: mpsc::Receiver<ProgUpdate>,
     print_level: Option<StatusLevel>,
@@ -445,20 +445,20 @@ pub(crate) fn gen_prog_updater(
     }
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 static SIGUSR1_RECEIVED: AtomicBool = AtomicBool::new(false);
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 pub(crate) fn check_and_reset_sigusr1() -> bool {
     SIGUSR1_RECEIVED.swap(false, Ordering::Relaxed)
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 extern "C" fn sigusr1_handler(_: std::os::raw::c_int) {
     SIGUSR1_RECEIVED.store(true, Ordering::Relaxed);
 }
 
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 pub(crate) fn install_sigusr1_handler() -> Result<(), nix::errno::Errno> {
     uucore::signals::install_signal_handler(nix::sys::signal::Signal::SIGUSR1, sigusr1_handler)
 }
@@ -472,7 +472,7 @@ pub(crate) fn install_sigusr1_handler() -> Result<(), nix::errno::Errno> {
 /// The closure also registers a signal handler for `SIGUSR1`. When
 /// the `SIGUSR1` signal is sent to this process, the transfer
 /// statistics are printed to stderr.
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 pub(crate) fn gen_prog_updater(
     rx: mpsc::Receiver<ProgUpdate>,
     print_level: Option<StatusLevel>,

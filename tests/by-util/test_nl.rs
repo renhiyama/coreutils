@@ -7,7 +7,7 @@
 use uutests::{at_and_ucmd, new_ucmd, util::TestScenario, util_name};
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_non_utf8_paths() {
     use std::os::unix::ffi::OsStringExt;
     let (at, mut ucmd) = at_and_ucmd!();
@@ -207,7 +207,7 @@ fn test_number_separator() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_number_separator_non_utf8() {
     use std::{ffi::OsString, os::unix::ffi::OsStringExt};
 
@@ -628,7 +628,7 @@ fn test_section_delimiter() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_section_delimiter_non_utf8() {
     use std::{ffi::OsString, os::unix::ffi::OsStringExt};
 
@@ -694,7 +694,7 @@ fn test_one_char_section_delimiter() {
 }
 
 #[test]
-#[cfg(any(target_os = "linux", target_os = "runixos"))]
+#[cfg(any(target_os = "linux"))]
 fn test_one_byte_section_delimiter() {
     use std::{ffi::OsString, os::unix::ffi::OsStringExt};
 

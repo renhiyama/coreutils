@@ -46,7 +46,7 @@ use uucore::fsxattr::has_acl;
 #[cfg(unix)]
 use uucore::libc::{S_IXGRP, S_IXOTH, S_IXUSR};
 #[cfg(any(
-    any(target_os = "linux", target_os = "runixos"),
+    any(target_os = "linux"),
     target_os = "macos",
     target_os = "android",
     target_os = "ios",
@@ -375,9 +375,9 @@ pub struct Config {
     time_format_recent: String,        // Time format for recent dates
     time_format_older: Option<String>, // Time format for older dates (optional, if not present, time_format_recent is used)
     context: bool,
-    #[cfg(all(feature = "selinux", any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+    #[cfg(all(feature = "selinux", any(any(target_os = "linux"), target_os = "android")))]
     selinux_supported: bool,
-    #[cfg(all(feature = "smack", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(all(feature = "smack", any(target_os = "linux")))]
     smack_supported: bool,
     group_directories_first: bool,
     line_ending: LineEnding,
@@ -1237,9 +1237,9 @@ impl Config {
             time_format_recent,
             time_format_older,
             context,
-            #[cfg(all(feature = "selinux", any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+            #[cfg(all(feature = "selinux", any(any(target_os = "linux"), target_os = "android")))]
             selinux_supported: uucore::selinux::is_selinux_enabled(),
-            #[cfg(all(feature = "smack", any(target_os = "linux", target_os = "runixos")))]
+            #[cfg(all(feature = "smack", any(target_os = "linux")))]
             smack_supported: uucore::smack::is_smack_enabled(),
             group_directories_first: options.get_flag(options::GROUP_DIRECTORIES_FIRST),
             line_ending: LineEnding::from_zero_flag(options.get_flag(options::ZERO)),
@@ -3266,7 +3266,7 @@ enum SizeOrDeviceId {
 
 fn display_len_or_rdev(metadata: &Metadata, config: &Config) -> SizeOrDeviceId {
     #[cfg(any(
-        any(target_os = "linux", target_os = "runixos"),
+        any(target_os = "linux"),
         target_os = "macos",
         target_os = "android",
         target_os = "ios",
@@ -3592,7 +3592,7 @@ fn get_security_context<'a>(
         }
     }
 
-    #[cfg(all(feature = "selinux", any(any(target_os = "linux", target_os = "runixos"), target_os = "android")))]
+    #[cfg(all(feature = "selinux", any(any(target_os = "linux"), target_os = "android")))]
     if config.selinux_supported {
         match selinux::SecurityContext::of_path(path, must_dereference, false) {
             Err(_r) => {
@@ -3630,7 +3630,7 @@ fn get_security_context<'a>(
         }
     }
 
-    #[cfg(all(feature = "smack", any(target_os = "linux", target_os = "runixos")))]
+    #[cfg(all(feature = "smack", any(target_os = "linux")))]
     if config.smack_supported {
         // For SMACK, use the path to get the label
         // If must_dereference is true, we follow the symlink
